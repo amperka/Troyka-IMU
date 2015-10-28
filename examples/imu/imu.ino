@@ -16,10 +16,7 @@ void setup()
 {
   // открываем последовательный порт
   Serial.begin(9600);
-  // пока не появились данные с USB
-  while (!Serial.available()) {
-    // ждём
-  }
+
   // выводим сообщение о начале инициализации
   Serial.println("Begin init...");
   

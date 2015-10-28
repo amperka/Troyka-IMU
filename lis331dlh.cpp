@@ -18,8 +18,6 @@
 #define ADR_FS_4        0x10
 #define ADR_FS_8        0x30
 
-#define G               9.8
-
 #define SENS_FS_2       0.001
 #define SENS_FS_4       0.002
 #define SENS_FS_8       0.0039
@@ -36,6 +34,8 @@ void LIS331DLH_TWI::begin()
     Wire.begin();
     setRange(RANGE_2);
     sleep(false);
+
+    _freeFallAcceleration = 9.8;
 }
 
 void LIS331DLH_TWI::setRange(uint8_t range)
@@ -91,17 +91,17 @@ int16_t LIS331DLH_TWI::readZ()
 
 float LIS331DLH_TWI::readX_G()
 {
-    return readX()*_mult*G;
+    return readX()*_mult*_freeFallAcceleration;
 }
 
 float LIS331DLH_TWI::readY_G()
 {
-    return readY()*_mult*G;
+    return readY()*_mult*_freeFallAcceleration;
 }
 
 float LIS331DLH_TWI::readZ_G()
 {
-    return readZ()*_mult*G;
+    return readZ()*_mult*_freeFallAcceleration;
 }
 
 int16_t LIS331DLH_TWI::readAxis(uint8_t reg)

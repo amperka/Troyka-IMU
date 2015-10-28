@@ -30,6 +30,7 @@ class LIS331DLH_TWI
         uint8_t _ctrlReg1;
         uint8_t _ctrlReg4;
         float _mult;
+        float _freeFallAcceleration;
 
     protected:
         void writeCtrlReg1();
