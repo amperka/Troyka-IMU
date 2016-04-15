@@ -57,6 +57,7 @@ class LPS331
 
     float readPressureMillibars(void);
     float readPressureInchesHg(void);
+    float readPressureMillimetersHg(void);
     int32_t readPressureRaw(void);
     float readTemperatureC(void);
     float readTemperatureF(void);

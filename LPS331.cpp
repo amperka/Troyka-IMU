@@ -63,6 +63,12 @@ float LPS331::readPressureInchesHg(void)
   return (float)readPressureRaw() / 138706.5;
 }
 
+// reads pressure in millimeters of mercury (mmHg)
+float LPS331::readPressureMillimetersHg(void)
+{
+  return (float)(readPressureRaw() / 4096.0) * 0.75006375541921;
+}
+
 // reads pressure and returns raw 24-bit sensor output
 int32_t LPS331::readPressureRaw(void)
 {
