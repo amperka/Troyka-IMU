@@ -55,7 +55,7 @@ byte LPS331::readReg(byte reg)
 // read pressure in pascals
 float LPS331::readPressurePascals(void)
 {
-  return (float)readPressureRaw() / 409.6;
+  return (float)readPressureRaw() / 40.96;
 }
 
 // reads pressure in millibars (mbar)/hectopascals (hPa)
