@@ -45,6 +45,9 @@
 #define LPS331_DELTA_PRESS_L  0x3D
 #define LPS331_DELTA_PRESS_H  0x3E
 
+// Some physical constants
+#define LPS331_CELSIUS_TO_KELVIN_OFFSET 273.15
+
 class LPS331
 {
   public:
@@ -55,13 +58,17 @@ class LPS331
     void writeReg(byte reg, byte value);
     byte readReg(byte reg);
 
+    float readPressurePascals(void);
     float readPressureMillibars(void);
     float readPressureInchesHg(void);
+    float readPressureMillimetersHg(void);
     int32_t readPressureRaw(void);
+    float readTemperatureK(void);
     float readTemperatureC(void);
     float readTemperatureF(void);
     int16_t readTemperatureRaw(void);
 
+    static float GOST4401_altitude(float pressure_pascals);
     static float pressureToAltitudeMeters(float pressure_mbar, float altimeter_setting_mbar = 1013.25);
     static float pressureToAltitudeFeet(float pressure_inHg, float altimeter_setting_inHg = 29.9213);
 
