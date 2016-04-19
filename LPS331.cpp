@@ -1,5 +1,6 @@
 #include <LPS331.h>
 #include <Wire.h>
+#include <GOST4401_81.h>
 
 // Defines ///////////////////////////////////////////////////////////
 
@@ -51,6 +52,12 @@ byte LPS331::readReg(byte reg)
   return value;
 }
 
+// read pressure in pascals
+float LPS331::readPressurePascals(void)
+{
+  return (float)readPressureRaw() / 409.6;
+}
+
 // reads pressure in millibars (mbar)/hectopascals (hPa)
 float LPS331::readPressureMillibars(void)
 {
@@ -66,7 +73,8 @@ float LPS331::readPressureInchesHg(void)
 // reads pressure in millimeters of mercury (mmHg)
 float LPS331::readPressureMillimetersHg(void)
 {
-  return (float)(readPressureRaw() / 4096.0) * 0.75006375541921;
+  // 1 mbar * 0,75006168270417 = 1 mmHg
+  return (float)(readPressureRaw()) * 0.75006375541921 / 4096.0;
 }
 
 // reads pressure and returns raw 24-bit sensor output
@@ -86,6 +94,11 @@ int32_t LPS331::readPressureRaw(void)
 
   // combine bytes
   return (int32_t)(int8_t)ph << 16 | (uint16_t)pl << 8 | pxl;
+}
+
+// reads temperature in degrees K
+float LPS331::readTemperatureK(){
+  return readTemperatureC() + LPS331_CELSIUS_TO_KELVIN_OFFSET;
 }
 
 // reads temperature in degrees C
@@ -116,6 +129,14 @@ int16_t LPS331::readTemperatureRaw(void)
 
   // combine bytes
   return (int16_t)(th << 8 | tl);
+}
+
+// Calculates altitude in meters above MSL using GOST4401-81 
+// atmosphere model from the given pressure in pascals
+// The model implemented for height up to 51km
+// 
+float LPS331::GOST4401_altitude(float pressure_pascals){
+  return GOST4401_getAltitude(pressure_pascals);
 }
 
 // converts pressure in mbar to altitude in meters, using 1976 US
