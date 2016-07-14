@@ -12,7 +12,7 @@ Compass compass;
 // создаём объект для работы с барометром
 Barometer barometer;
 
-// калибровочные значения компасса
+// калибровочные значения компаса
 // полученные в калибровочной матрице из примера «compassCalibrateMatrix»
 const double compassCalibrationBias[3] = {
   524.21,
