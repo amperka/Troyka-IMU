@@ -1,7 +1,7 @@
 // библитоека для работы I²C
 #include <Wire.h>
 // библиотека для работы с модулями IMU
-#include <troyka-imu.h>
+#include <TroykaIMU.h>
 
 // создаём объект для работы с акселерометром
 Accelerometer accel;
@@ -9,29 +9,41 @@ Accelerometer accel;
 void setup()
 {
   // открываем последовательный порт
-  Serial.begin(9600);
-
+  Serial.begin(115200);
   // выводим сообщение о начале инициализации
-  Serial.println("Begin init...");
+  Serial.println("Accelerometer init...");
   // инициализация акселерометра
   accel.begin();
+  // устанавливаем чувствительность акселерометра
+  // 2g — по умолчанию, 4g, 8g
+  accel.setRange(RANGE_2G);
   // выводим сообщение об удачной инициализации
-  Serial.println("Init completed");
-  // устанавливаем чувствительность
-  accel.setRange(RANGE_2);
+  Serial.println("Initialization completed");
 }
 
 void loop()
 {
-  // вывод направления и величины ускорения по оси X
-  Serial.print(accel.readX_G());
+  // вывод направления и величины ускорения в м/с² по оси X
+  Serial.print(accel.readAX());
   Serial.print("\t\t");
-  // вывод направления и величины ускорения по оси Y
-  Serial.print(accel.readY_G());
+  // вывод направления и величины ускорения в м/с² по оси Y
+  Serial.print(accel.readAY());
   Serial.print("\t\t");
-  // вывод направления и величины ускорения по оси Z
-  Serial.print(accel.readZ_G());
+  // вывод направления и величины ускорения в м/с² по оси Z
+  Serial.print(accel.readAZ());
   Serial.print("\t\t");
   Serial.println("");
-  delay(300);
+  delay(100);
+  /*
+  // вывод напраления и величины ускорения в м/с² по X, Y и Z
+  float x, y, z;
+  accel.readAXYZ(&x, &y, &z);
+  Serial.print(x);
+  Serial.print("\t\t");
+  Serial.print(y);
+  Serial.print("\t\t");
+  Serial.print(z);
+  Serial.println("");
+  delay(100);
+  */
 }

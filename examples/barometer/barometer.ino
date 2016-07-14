@@ -1,21 +1,20 @@
 // библиотека для работы I²C
 #include <Wire.h>
 // библиотека для работы с модулями IMU
-#include <troyka-imu.h>
+#include <TroykaIMU.h>
 // создаём объект для работы с барометром
 Barometer barometer;
 
 void setup()
 {
   // открываем последовательный порт
-  Serial.begin(9600);
-
+  Serial.begin(115200);
   // выводим сообщение о начале инициализации
   Serial.println("Begin init...");
   // инициализация барометра
   barometer.begin();
   // выводим сообщение об удачной инициализации
-  Serial.println("Init completed");
+  Serial.println("Initialization completed");
 }
 
 void loop()
@@ -37,5 +36,5 @@ void loop()
   Serial.print("t: ");
   Serial.print(temperature);
   Serial.println(" C");
-  delay(300);
+  delay(100);
 }

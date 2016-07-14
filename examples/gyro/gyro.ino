@@ -1,7 +1,7 @@
 // библитоека для работы I²C
 #include <Wire.h>
 // библиотека для работы с модулями IMU
-#include <troyka-imu.h>
+#include <TroykaIMU.h>
 
 // создаём объект для работы с гироскопом
 Gyroscope gyro;
@@ -9,29 +9,41 @@ Gyroscope gyro;
 void setup()
 {
   // открываем последовательный порт
-  Serial.begin(9600);
-
+  Serial.begin(115200);
   // выводим сообщение о начале инициализации
-  Serial.println("Begin init...");
+  Serial.println("Gyroscope init...");
   // инициализация гироскопа
   gyro.begin();
+  // устанавливаем чувствительность гироскопа
+  // 250dps — по умолчанию, 500dps, 2000dps
+  gyro.setRange(RANGE_250DPS);
   // выводим сообщение об удачной инициализации
-  Serial.println("Init completed");
-  // устанавливаем чувствительность
-  gyro.setRange(RANGE_250);
+  Serial.println("Initialization completed");
 }
 
 void loop()
 {
-  // вывод угловой скорости относительно оси X
-  Serial.print(gyro.readX_DegPerSec());
+  // вывод угловой скорости в градусах в секунду относительно оси X
+  Serial.print(gyro.readDegPerSecX());
   Serial.print("\t\t");
-  // вывод угловой скорости относительно оси Y
-  Serial.print(gyro.readY_DegPerSec());
+  // вывод угловой скорости в градусах в секунду относительно оси Y
+  Serial.print(gyro.readDegPerSecY());
   Serial.print("\t\t");
-  // вывод угловой скорости относительно оси Z
-  Serial.print(gyro.readZ_DegPerSec());
+  // вывод угловой скорости в градусах в секунду относительно оси Z
+  Serial.print(gyro.readDegPerSecZ());
   Serial.print("\t\t");
   Serial.println("");
-  delay(300);
+  delay(100);
+/*
+  // вывод угловой скорости в градусах в секунду относительно оси X, Y и Z
+  float x, y, z;
+  gyro.readXYZ_DegPerSec(&x, &y, &z);
+  Serial.print(x);
+  Serial.print("\t\t");
+  Serial.print(y);
+  Serial.print("\t\t");
+  Serial.print(z);
+  Serial.println("");
+  delay(100);
+*/
 }

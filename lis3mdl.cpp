@@ -1,9 +1,6 @@
-
 #include <Arduino.h>
 #include <Wire.h>
-
-#include "lis3mdl.h"
-
+#include "./lis3mdl.h"
 
 #define CTRL_REG1       0x20
 #define CTRL_REG2       0x21
@@ -25,192 +22,193 @@
 #define SENS_FS_12      2281
 #define SENS_FS_16      1711
 
-LIS3MDL_TWI::LIS3MDL_TWI(uint8_t addr)
-{
+LIS3MDL_TWI::LIS3MDL_TWI(uint8_t addr) {
     _addr = addr;
-
-    _ctrlReg1 = 0x0;
 }
 
-void LIS3MDL_TWI::begin()
-{
+void LIS3MDL_TWI::begin() {
     Wire.begin();
-
-    Wire.beginTransmission(_addr);
-    Wire.write(0x22);
-    Wire.write(0);
-    Wire.endTransmission();
-
-    setRange(RANGE_4);
+    // устанавливаем чувствительность
+    setRange(RANGE_4_GAUSS);
+    writeCtrlReg3();
 }
 
-void LIS3MDL_TWI::setRange(uint8_t range)
-{
+void LIS3MDL_TWI::setRange(uint8_t range) {
     switch (range) {
-        case RANGE_4: {
+        case RANGE_4_GAUSS: {
             _ctrlReg2 = ADR_FS_4;
             _mult = SENS_FS_4;
             break;
         }
-        case RANGE_8: {
+        case RANGE_8_GAUSS: {
             _ctrlReg2 = ADR_FS_8;
             _mult = SENS_FS_8;
             break;
         }
-        case RANGE_12: {
+        case RANGE_12_GAUSS: {
             _ctrlReg2 = ADR_FS_12;
             _mult = SENS_FS_12;
             break;
         }
-        case RANGE_16: {
+        case RANGE_16_GAUSS: {
             _ctrlReg2 = ADR_FS_16;
             _mult = SENS_FS_16;
             break;
         }
         default: {
-        _mult = SENS_FS_4;    
+        _mult = SENS_FS_4;
         }
         break;
     }
     writeCtrlReg2();
 }
 
-int16_t LIS3MDL_TWI::readX()
-{
+int16_t LIS3MDL_TWI::readX() {
     return readAxis(OUT_X);
 }
 
-int16_t LIS3MDL_TWI::readY()
-{
+int16_t LIS3MDL_TWI::readY() {
     return readAxis(OUT_Y);
 }
 
-int16_t LIS3MDL_TWI::readZ()
-{
+int16_t LIS3MDL_TWI::readZ() {
     return readAxis(OUT_Z);
 }
 
-float LIS3MDL_TWI::readX_Gauss()
-{
-    return readX()/_mult;
+float LIS3MDL_TWI::readGaussX() {
+    return readX() / _mult;
 }
 
-float LIS3MDL_TWI::readY_Gauss()
-{
-    return readY()/_mult;
+float LIS3MDL_TWI::readGaussY() {
+    return readY() / _mult;
 }
 
-float LIS3MDL_TWI::readZ_Gauss()
-{
-    return readZ()/_mult;
+float LIS3MDL_TWI::readGaussZ() {
+    return readZ() / _mult;
 }
 
-void LIS3MDL_TWI::readXYZ_Calib()
-{
-    double calibration_matrix[3][3] = 
-    {
-        {2.446, 0.074, 0.006},
-        {0.07, 2.317, -0.006},
-        {-0.027, -0.12, 2.458}  
-    };
+float LIS3MDL_TWI::readCalibrateX() {
+    calibrate();
+    return _xCalibrate;
+}
 
-    double bias[3] = 
-    {
-        -1221.593,
-        -2042.451,
-        6497.221
-    };
+float LIS3MDL_TWI::readCalibrateY() {
+    calibrate();
+    return _yCalibrate;
+}
 
+float LIS3MDL_TWI::readCalibrateZ() {
+    calibrate();
+    return _zCalibrate;
+}
+
+float LIS3MDL_TWI::readCalibrateGaussX() {
+    return readCalibrateX()/_mult;
+}
+
+float LIS3MDL_TWI::readCalibrateGaussY() {
+    return readCalibrateY()/_mult;
+}
+
+float LIS3MDL_TWI::readCalibrateGaussZ() {
+    return readCalibrateZ()/_mult;
+}
+
+void LIS3MDL_TWI::calibrate() {
     float result[3] = {0, 0, 0};
-    float uncalibrated_values[3];
-    uncalibrated_values[0] = readX() - bias[0];
-    uncalibrated_values[1] = readY() - bias[1];
-    uncalibrated_values[2] = readZ() - bias[2];
+    float uncalibratedValues[3];
+    uncalibratedValues[0] = readX() - _bias[0];
+    uncalibratedValues[1] = readY() - _bias[1];
+    uncalibratedValues[2] = readZ() - _bias[2];
 
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
-        result[i] += calibration_matrix[i][j] * uncalibrated_values[j];
+        result[i] += _calibrationMatrix[i][j] * uncalibratedValues[j];
         }
     }
 
-    x_cal = result[0];
-    y_cal = result[1];
-    z_cal = result[2];
+    _xCalibrate = result[0];
+    _yCalibrate = result[1];
+    _zCalibrate = result[2];
 }
 
-float LIS3MDL_TWI::read_Yaw()
-{
-    readXYZ_Calib();
-    float heading = atan2(y_cal, x_cal);
+void LIS3MDL_TWI::calibrateMatrix(const double calibrationMatrix[3][3], const double bias[3]) {
+    for (int i = 0; i < 3; i++)
+        _bias[i] = bias[i];
 
-    if(heading < 0)
-    heading += 2*PI;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++)
+        _calibrationMatrix[i][j] = calibrationMatrix[i][j];
+    }
+}
 
-    if(heading > 2*PI)
-    heading -= 2*PI;
+void LIS3MDL_TWI::readCalibrateGaussXYZ(float *x, float *y, float *z) {
+    calibrate();
+    *x = _xCalibrate;
+    *y = _yCalibrate;
+    *z = _zCalibrate;
+}
 
-    float headingDegrees = heading * 180/M_PI;
+float LIS3MDL_TWI::readAzimut() {
+    calibrate();
+    float heading = atan2(_yCalibrate, _xCalibrate);
+
+    if (heading < 0)
+        heading += 2 * PI;
+    if (heading > 2 * PI)
+        heading -= 2 * PI;
+
+    float headingDegrees = heading * 180 / M_PI;
 
     return headingDegrees;
 }
-int16_t LIS3MDL_TWI::readAxis(uint8_t reg)
-{
-    Wire.beginTransmission(_addr);
-    Wire.write(reg);
-    Wire.endTransmission();
-    Wire.requestFrom(_addr, 1);
-    while (Wire.available() < 1)
-        ;
-    uint8_t lowByte = Wire.read();
 
-    ++reg;
-
-    Wire.beginTransmission(_addr);
-    Wire.write(reg);
-    Wire.endTransmission();
-    Wire.requestFrom(_addr, 1);
-    while (Wire.available() < 1)
-        ;
-    uint8_t highByte = Wire.read();
-
-    return ((int16_t)highByte << 8) | lowByte;
-
+int16_t LIS3MDL_TWI::readAxis(uint8_t reg) {
+    return (((int16_t)readByte(reg + 1) << 8) | readByte(reg));
 }
 
-void LIS3MDL_TWI::writeCtrlReg1()
-{
+uint8_t LIS3MDL_TWI::readByte(uint8_t reg) {
+    uint8_t value = 0;
+    Wire.beginTransmission(_addr);
+    Wire.write(reg);
+    Wire.endTransmission();
+    Wire.requestFrom(_addr, (uint8_t)1);
+    while (Wire.available() < 1) {
+    }
+    value = Wire.read();
+    Wire.endTransmission();
+    return value;
+}
+
+void LIS3MDL_TWI::writeCtrlReg1() {
     Wire.beginTransmission(_addr);
     Wire.write(CTRL_REG1);
     Wire.write(_ctrlReg1);
     Wire.endTransmission();
 }
 
-void LIS3MDL_TWI::writeCtrlReg2()
-{
+void LIS3MDL_TWI::writeCtrlReg2() {
     Wire.beginTransmission(_addr);
     Wire.write(CTRL_REG2);
     Wire.write(_ctrlReg2);
     Wire.endTransmission();
 }
 
-void LIS3MDL_TWI::writeCtrlReg3()
-{
+void LIS3MDL_TWI::writeCtrlReg3() {
     Wire.beginTransmission(_addr);
     Wire.write(CTRL_REG3);
     Wire.write(_ctrlReg3);
     Wire.endTransmission();
 }
 
-void LIS3MDL_TWI::writeCtrlReg4()
-{
+void LIS3MDL_TWI::writeCtrlReg4() {
     Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG3);
-    Wire.write(_ctrlReg3);
+    Wire.write(CTRL_REG4);
+    Wire.write(_ctrlReg4);
     Wire.endTransmission();
 }
 
-void LIS3MDL_TWI::writeCtrlReg5()
-{
+void LIS3MDL_TWI::writeCtrlReg5() {
     Wire.beginTransmission(_addr);
     Wire.write(CTRL_REG5);
     Wire.write(_ctrlReg5);
