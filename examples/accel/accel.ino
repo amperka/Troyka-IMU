@@ -1,4 +1,4 @@
-// библитоека для работы I²C
+// библиотека для работы I²C
 #include <Wire.h>
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
@@ -35,7 +35,7 @@ void loop()
   Serial.println("");
   delay(100);
   /*
-  // вывод напраления и величины ускорения в м/с² по X, Y и Z
+  // вывод направления и величины ускорения в м/с² по X, Y и Z
   float x, y, z;
   accel.readAXYZ(&x, &y, &z);
   Serial.print(x);
