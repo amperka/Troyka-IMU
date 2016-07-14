@@ -17,6 +17,6 @@ TroykaIMU
 
 Подробности и примеры работы для [гироскопа (Troyka-модуль)](http://wiki.amperka.ru/продукты:troyka-gyro).
 
-Подробности и примеры работы для [компасса (Troyka-модуль)](http://wiki.amperka.ru/продукты:troyka-compass).
+Подробности и примеры работы для [компаса (Troyka-модуль)](http://wiki.amperka.ru/продукты:troyka-compass).
 
 Подробности и примеры работы для [барометра (Troyka-модуль)](http://wiki.amperka.ru/продукты:troyka-barometer).
