@@ -2,10 +2,10 @@
 #include <Wire.h>
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
-
+ 
 // создаём объект для работы с компасом
 Compass compass;
-
+ 
 // калибровочные значения, полученные в калибровочной матрице
 // из примера compass_cal_matrix
 const double compassCalibrationBias[3] = {
@@ -13,13 +13,13 @@ const double compassCalibrationBias[3] = {
   3352.214,
   -1402.236
 };
-
+ 
 const double compassCalibrationMatrix[3][3] = {
   {1.757, 0.04, -0.028},
   {0.008, 1.767, -0.016},
   {-0.018, 0.077, 1.782}
 };
-
+ 
 void setup()
 {
   // открываем последовательный порт
@@ -37,7 +37,7 @@ void setup()
   // выводим сообщение об удачной инициализации
   Serial.println("Initialization completed");
 }
-
+ 
 void loop()
 {
   // выводим азимут относительно оси Z

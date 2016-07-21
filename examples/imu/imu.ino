@@ -2,7 +2,7 @@
 #include <Wire.h>
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
-
+ 
 // создаём объект для работы с гироскопом
 Gyroscope gyro;
 // создаём объект для работы с акселерометром
@@ -11,7 +11,7 @@ Accelerometer accel;
 Compass compass;
 // создаём объект для работы с барометром
 Barometer barometer;
-
+ 
 // калибровочные значения компаса
 // полученные в калибровочной матрице из примера «compassCalibrateMatrix»
 const double compassCalibrationBias[3] = {
@@ -19,13 +19,13 @@ const double compassCalibrationBias[3] = {
   3352.214,
   -1402.236
 };
-
+ 
 const double compassCalibrationMatrix[3][3] = {
   {1.757, 0.04, -0.028},
   {0.008, 1.767, -0.016},
   {-0.018, 0.077, 1.782}
 };
-
+ 
 void setup()
 {
   // открываем последовательный порт
@@ -46,7 +46,7 @@ void setup()
   Serial.println("Initialization completed");
   Serial.println("Gyroscope\t\t\tAccelerometer\t\t\tCompass\t\tBarometer");
 }
-
+ 
 void loop()
 {
   // вывод угловой скорости в градусах в секунду относительно оси X

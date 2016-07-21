@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "./lis331dlh.h"
+#include "lis331dlh.h"
 
 #define CTRL_REG1       0x20
 #define CTRL_REG2       0x21
@@ -54,7 +54,7 @@ void LIS331DLH_TWI::setRange(uint8_t range) {
             break;
         }
         default: {
-            _mult = RANGE_2G / 32767.0;
+            _mult = RANGE_2G / 32767.0;    
         }
         break;
     }
@@ -108,8 +108,7 @@ float LIS331DLH_TWI::readAZ() {
 
 void LIS331DLH_TWI::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
     Wire.beginTransmission(_addr);
-    // assert MSB to enable register address auto-increment
-    Wire.write(OUT_X | (1 << 7));
+    Wire.write(OUT_X | (1 << 7));  // assert MSB to enable register address auto-increment
     Wire.endTransmission();
     Wire.requestFrom(_addr, (uint8_t)6);
     uint8_t values[6];
@@ -117,7 +116,7 @@ void LIS331DLH_TWI::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
         values[i] = Wire.read();
     }
     Wire.endTransmission();
-
+    
     *x = (((int16_t)values[1] << 8) | values[0]);
     *y = (((int16_t)values[3] << 8) | values[2]);
     *z = (((int16_t)values[5] << 8) | values[4]);
@@ -126,21 +125,21 @@ void LIS331DLH_TWI::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
 void LIS331DLH_TWI::readGXYZ(float *gx, float *gy, float *gz) {
     int16_t x, y, z;
     readXYZ(&x, &y, &z);
-    *gx = static_cast<float>(x) * _mult;
-    *gy = static_cast<float>(y) * _mult;
-    *gz = static_cast<float>(z) * _mult;
+    *gx = (float)x * _mult;
+    *gy = (float)y * _mult;
+    *gz = (float)z * _mult;
 }
 
 void LIS331DLH_TWI::readAXYZ(float *ax, float *ay, float *az) {
     int16_t x, y, z;
     readXYZ(&x, &y, &z);
-    *ax = static_cast<float>(x) * _mult * G;
-    *ay = static_cast<float>(y) * _mult * G;
-    *az = static_cast<float>(z) * _mult * G;
+    *ax = (float)x * _mult * G;
+    *ay = (float)y * _mult * G;
+    *az = (float)z * _mult * G;
 }
 
 int16_t LIS331DLH_TWI::readAxis(uint8_t reg) {
-    return (((int16_t)readByte(reg + 1) << 8) | readByte(reg));
+    return (((int16_t)readByte(reg + 1) << 8) | readByte(reg)) ;
 }
 
 uint8_t LIS331DLH_TWI::readByte(uint8_t reg) {
@@ -149,8 +148,8 @@ uint8_t LIS331DLH_TWI::readByte(uint8_t reg) {
     Wire.write(reg);
     Wire.endTransmission();
     Wire.requestFrom(_addr, (uint8_t)1);
-    while (Wire.available() < 1) {
-    }
+    while (Wire.available() < 1)
+        ;
     value = Wire.read();
     Wire.endTransmission();
     return value;

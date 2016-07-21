@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "./l3g4200d.h"
+#include "l3g4200d.h"
 
 #define DEG_TO_RAD      0.0175
 
@@ -44,7 +44,7 @@ void L3G4200D_TWI::setRange(uint8_t range) {
             break;
         }
         default: {
-        _mult = SENS_FS_250;
+        _mult = SENS_FS_250;    
         }
         break;
     }
@@ -113,8 +113,7 @@ float L3G4200D_TWI::readRadPerSecZ() {
 
 void L3G4200D_TWI::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
     Wire.beginTransmission(_addr);
-    // assert MSB to enable register address auto-increment
-    Wire.write(OUT_X | (1 << 7));
+    Wire.write(OUT_X | (1 << 7));  // assert MSB to enable register address auto-increment
     Wire.endTransmission();
     Wire.requestFrom(_addr, (uint8_t)6);
     uint8_t values[6];
@@ -122,7 +121,7 @@ void L3G4200D_TWI::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
         values[i] = Wire.read();
     }
     Wire.endTransmission();
-
+    
     *x = (((int16_t)values[1] << 8) | values[0]);
     *y = (((int16_t)values[3] << 8) | values[2]);
     *z = (((int16_t)values[5] << 8) | values[4]);
@@ -131,17 +130,17 @@ void L3G4200D_TWI::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
 void L3G4200D_TWI::readDegPerSecXYZ(float *gx, float *gy, float *gz) {
     int16_t x, y, z;
     readXYZ(&x, &y, &z);
-    *gx = static_cast<float>(x) * _mult;
-    *gy = static_cast<float>(y) * _mult;
-    *gz = static_cast<float>(z) * _mult;
+    *gx = (float)x * _mult;
+    *gy = (float)y * _mult;
+    *gz = (float)z * _mult;
 }
 
 void L3G4200D_TWI::readRadPerSecXYZ(float *gx, float *gy, float *gz) {
     int16_t x, y, z;
     readXYZ(&x, &y, &z);
-    *gx = static_cast<float>(x) * _mult * DEG_TO_RAD;
-    *gy = static_cast<float>(y) * _mult * DEG_TO_RAD;
-    *gz = static_cast<float>(z) * _mult * DEG_TO_RAD;
+    *gx = (float)x * _mult * DEG_TO_RAD;
+    *gy = (float)y * _mult * DEG_TO_RAD;
+    *gz = (float)z * _mult * DEG_TO_RAD;
 }
 
 int16_t L3G4200D_TWI::readAxis(uint8_t reg) {
@@ -154,8 +153,8 @@ uint8_t L3G4200D_TWI::readByte(uint8_t reg) {
     Wire.write(reg);
     Wire.endTransmission();
     Wire.requestFrom(_addr, (uint8_t)1);
-    while (Wire.available() < 1) {
-    }
+    while (Wire.available() < 1)
+        ;
     value = Wire.read();
     Wire.endTransmission();
     return value;

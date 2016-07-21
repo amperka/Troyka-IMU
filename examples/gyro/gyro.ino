@@ -2,10 +2,10 @@
 #include <Wire.h>
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
-
+ 
 // создаём объект для работы с гироскопом
 Gyroscope gyro;
-
+ 
 void setup()
 {
   // открываем последовательный порт
@@ -20,7 +20,7 @@ void setup()
   // выводим сообщение об удачной инициализации
   Serial.println("Initialization completed");
 }
-
+ 
 void loop()
 {
   // вывод угловой скорости в градусах в секунду относительно оси X

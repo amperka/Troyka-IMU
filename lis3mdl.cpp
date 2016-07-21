@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "./lis3mdl.h"
+#include "lis3mdl.h"
 
 #define CTRL_REG1       0x20
 #define CTRL_REG2       0x21
@@ -56,7 +56,7 @@ void LIS3MDL_TWI::setRange(uint8_t range) {
             break;
         }
         default: {
-        _mult = SENS_FS_4;
+        _mult = SENS_FS_4;    
         }
         break;
     }
@@ -133,13 +133,13 @@ void LIS3MDL_TWI::calibrate() {
 }
 
 void LIS3MDL_TWI::calibrateMatrix(const double calibrationMatrix[3][3], const double bias[3]) {
-    for (int i = 0; i < 3; i++)
+    for(int i = 0; i < 3; i++)
         _bias[i] = bias[i];
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++)
         _calibrationMatrix[i][j] = calibrationMatrix[i][j];
-    }
+    }  
 }
 
 void LIS3MDL_TWI::readCalibrateGaussXYZ(float *x, float *y, float *z) {
@@ -153,10 +153,11 @@ float LIS3MDL_TWI::readAzimut() {
     calibrate();
     float heading = atan2(_yCalibrate, _xCalibrate);
 
-    if (heading < 0)
-        heading += 2 * PI;
-    if (heading > 2 * PI)
-        heading -= 2 * PI;
+    if(heading < 0)
+    heading += 2 * PI;
+
+    if(heading > 2 * PI)
+    heading -= 2 * PI;
 
     float headingDegrees = heading * 180 / M_PI;
 
@@ -164,7 +165,7 @@ float LIS3MDL_TWI::readAzimut() {
 }
 
 int16_t LIS3MDL_TWI::readAxis(uint8_t reg) {
-    return (((int16_t)readByte(reg + 1) << 8) | readByte(reg));
+    return (((int16_t)readByte(reg + 1) << 8) | readByte(reg)) ;
 }
 
 uint8_t LIS3MDL_TWI::readByte(uint8_t reg) {
@@ -173,8 +174,8 @@ uint8_t LIS3MDL_TWI::readByte(uint8_t reg) {
     Wire.write(reg);
     Wire.endTransmission();
     Wire.requestFrom(_addr, (uint8_t)1);
-    while (Wire.available() < 1) {
-    }
+    while (Wire.available() < 1)
+        ;
     value = Wire.read();
     Wire.endTransmission();
     return value;
