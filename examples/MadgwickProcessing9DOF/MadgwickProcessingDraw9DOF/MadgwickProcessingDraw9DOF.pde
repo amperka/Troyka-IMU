@@ -62,7 +62,7 @@ void serialEvent() {
   message = port.readStringUntil(newLine);
   if (message != null) {
     // split message by commas and store in String array 
-    massQ = split(message, ",");
+    massQ = split(message, " ");
     q[0] = float(massQ[0]);
     q[1] = float(massQ[1]);
     q[2] = float(massQ[2]);
