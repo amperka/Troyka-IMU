@@ -26,8 +26,7 @@ void Madgwick::printQuaternions(){
 	Serial.print("  ");
 	Serial.print(_q2);
 	Serial.print("  ");
-	Serial.print(_q3);
-	Serial.print("  ");
+	Serial.println(_q3);
 }
 //---------------------------------------------------------------------------------------------------
 // AHRS algorithm update
