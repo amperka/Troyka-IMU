@@ -1,16 +1,6 @@
-#include <Arduino.h>
 #include <Wire.h>
+#include <math.h>
 #include "lis3mdl.h"
-
-#define CTRL_REG1       0x20
-#define CTRL_REG2       0x21
-#define CTRL_REG3       0x22
-#define CTRL_REG4       0x23
-#define CTRL_REG5       0x24
-
-#define OUT_X           0x28
-#define OUT_Y           0x2A
-#define OUT_Z           0x2C
 
 #define ADR_FS_4        0x00
 #define ADR_FS_8        0x20
@@ -22,8 +12,7 @@
 #define SENS_FS_12      2281
 #define SENS_FS_16      1711
 
-LIS3MDL_TWI::LIS3MDL_TWI(uint8_t addr) {
-    _addr = addr;
+LIS3MDL_TWI::LIS3MDL_TWI(uint8_t addr) : AxisHw(addr) {
 }
 
 void LIS3MDL_TWI::begin() {
@@ -61,18 +50,6 @@ void LIS3MDL_TWI::setRange(uint8_t range) {
         break;
     }
     writeCtrlReg2();
-}
-
-int16_t LIS3MDL_TWI::readX() {
-    return readAxis(OUT_X);
-}
-
-int16_t LIS3MDL_TWI::readY() {
-    return readAxis(OUT_Y);
-}
-
-int16_t LIS3MDL_TWI::readZ() {
-    return readAxis(OUT_Z);
 }
 
 float LIS3MDL_TWI::readGaussX() {
@@ -154,64 +131,12 @@ float LIS3MDL_TWI::readAzimut() {
     float heading = atan2(_yCalibrate, _xCalibrate);
 
     if(heading < 0)
-    heading += 2 * PI;
+    heading += 2 * M_PI;
 
-    if(heading > 2 * PI)
-    heading -= 2 * PI;
+    if(heading > 2 * M_PI)
+    heading -= 2 * M_PI;
 
     float headingDegrees = heading * 180 / M_PI;
 
     return headingDegrees;
-}
-
-int16_t LIS3MDL_TWI::readAxis(uint8_t reg) {
-    return (((int16_t)readByte(reg + 1) << 8) | readByte(reg)) ;
-}
-
-uint8_t LIS3MDL_TWI::readByte(uint8_t reg) {
-    uint8_t value = 0;
-    Wire.beginTransmission(_addr);
-    Wire.write(reg);
-    Wire.endTransmission();
-    Wire.requestFrom(_addr, (uint8_t)1);
-    while (Wire.available() < 1)
-        ;
-    value = Wire.read();
-    Wire.endTransmission();
-    return value;
-}
-
-void LIS3MDL_TWI::writeCtrlReg1() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG1);
-    Wire.write(_ctrlReg1);
-    Wire.endTransmission();
-}
-
-void LIS3MDL_TWI::writeCtrlReg2() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG2);
-    Wire.write(_ctrlReg2);
-    Wire.endTransmission();
-}
-
-void LIS3MDL_TWI::writeCtrlReg3() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG3);
-    Wire.write(_ctrlReg3);
-    Wire.endTransmission();
-}
-
-void LIS3MDL_TWI::writeCtrlReg4() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG4);
-    Wire.write(_ctrlReg4);
-    Wire.endTransmission();
-}
-
-void LIS3MDL_TWI::writeCtrlReg5() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG5);
-    Wire.write(_ctrlReg5);
-    Wire.endTransmission();
 }
