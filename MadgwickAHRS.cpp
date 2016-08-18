@@ -2,8 +2,6 @@
 #include <math.h>
 #include <Arduino.h>
 
-#define RAD_TO_DEG  57.2
-
 Madgwick::Madgwick() {
 
 }
