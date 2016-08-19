@@ -154,12 +154,11 @@ float LIS3MDL_TWI::readAzimut() {
     float heading = atan2(_yCalibrate, _xCalibrate);
 
     if(heading < 0)
-    heading += 2 * PI;
+        heading += TWO_PI;
+    else if(heading > TWO_PI)
+        heading -= TWO_PI;
 
-    if(heading > 2 * PI)
-    heading -= 2 * PI;
-
-    float headingDegrees = heading * 180 / M_PI;
+    float headingDegrees = heading * RAD_TO_DEG;
 
     return headingDegrees;
 }

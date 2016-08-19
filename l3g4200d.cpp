@@ -2,8 +2,6 @@
 #include <Wire.h>
 #include "l3g4200d.h"
 
-#define DEG_TO_RAD      0.0175
-
 #define CTRL_REG1       0x20
 #define CTRL_REG2       0x21
 #define CTRL_REG3       0x22
