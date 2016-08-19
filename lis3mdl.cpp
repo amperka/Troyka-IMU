@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include <math.h>
+#include <Arduino.h>
 #include "lis3mdl.h"
 
 #define ADR_FS_4        0x00
@@ -136,56 +136,4 @@ float LIS3MDL_TWI::readAzimut() {
         heading -= TWO_PI;
     float headingDegrees = heading * RAD_TO_DEG;
     return headingDegrees;
-}
-
-int16_t LIS3MDL_TWI::readAxis(uint8_t reg) {
-    return (((int16_t)readByte(reg + 1) << 8) | readByte(reg)) ;
-}
-
-uint8_t LIS3MDL_TWI::readByte(uint8_t reg) {
-    uint8_t value = 0;
-    Wire.beginTransmission(_addr);
-    Wire.write(reg);
-    Wire.endTransmission();
-    Wire.requestFrom(_addr, (uint8_t)1);
-    while (Wire.available() < 1)
-        ;
-    value = Wire.read();
-    Wire.endTransmission();
-    return value;
-}
-
-void LIS3MDL_TWI::writeCtrlReg1() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG1);
-    Wire.write(_ctrlReg1);
-    Wire.endTransmission();
-}
-
-void LIS3MDL_TWI::writeCtrlReg2() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG2);
-    Wire.write(_ctrlReg2);
-    Wire.endTransmission();
-}
-
-void LIS3MDL_TWI::writeCtrlReg3() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG3);
-    Wire.write(_ctrlReg3);
-    Wire.endTransmission();
-}
-
-void LIS3MDL_TWI::writeCtrlReg4() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG4);
-    Wire.write(_ctrlReg4);
-    Wire.endTransmission();
-}
-
-void LIS3MDL_TWI::writeCtrlReg5() {
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG5);
-    Wire.write(_ctrlReg5);
-    Wire.endTransmission();
 }

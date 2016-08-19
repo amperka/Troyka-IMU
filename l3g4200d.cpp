@@ -1,7 +1,6 @@
 #include <Wire.h>
+#include <Arduino.h>
 #include "l3g4200d.h"
-
-#define DEG_TO_RAD      0.0175
 
 #define ADR_FS_250      0x00
 #define ADR_FS_500      0x10
