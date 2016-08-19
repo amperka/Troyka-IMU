@@ -21,11 +21,11 @@ void Madgwick::reset() {
 
 void Madgwick::printQuaternions(){
 	Serial.print(_q0);
-	Serial.print("  ");
+	Serial.print(" ");
 	Serial.print(_q1);
-	Serial.print("  ");
+	Serial.print(" ");
 	Serial.print(_q2);
-	Serial.print("  ");
+	Serial.print(" ");
 	Serial.println(_q3);
 }
 //---------------------------------------------------------------------------------------------------
