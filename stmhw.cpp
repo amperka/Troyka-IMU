@@ -48,7 +48,7 @@ void AxisHw::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
     Wire.write(OUT_X | (1 << 7));  // assert MSB to enable register address auto-increment
     Wire.endTransmission();
 
-    constexpr uint8_t burstSize = 6;
+    uint8_t burstSize = 6;
     Wire.requestFrom(_addr, burstSize);
     uint8_t values[burstSize];
     for (uint8_t i = 0; i < burstSize; i++) {
