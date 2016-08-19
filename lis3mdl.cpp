@@ -1,16 +1,6 @@
-#include <Arduino.h>
 #include <Wire.h>
+#include <math.h>
 #include "lis3mdl.h"
-
-#define CTRL_REG1       0x20
-#define CTRL_REG2       0x21
-#define CTRL_REG3       0x22
-#define CTRL_REG4       0x23
-#define CTRL_REG5       0x24
-
-#define OUT_X           0x28
-#define OUT_Y           0x2A
-#define OUT_Z           0x2C
 
 #define ADR_FS_4        0x00
 #define ADR_FS_8        0x20
@@ -22,8 +12,7 @@
 #define SENS_FS_12      2281
 #define SENS_FS_16      1711
 
-LIS3MDL_TWI::LIS3MDL_TWI(uint8_t addr) {
-    _addr = addr;
+LIS3MDL_TWI::LIS3MDL_TWI(uint8_t addr) : AxisHw(addr) {
 }
 
 void LIS3MDL_TWI::begin() {
@@ -61,18 +50,6 @@ void LIS3MDL_TWI::setRange(uint8_t range) {
         break;
     }
     writeCtrlReg2();
-}
-
-int16_t LIS3MDL_TWI::readX() {
-    return readAxis(OUT_X);
-}
-
-int16_t LIS3MDL_TWI::readY() {
-    return readAxis(OUT_Y);
-}
-
-int16_t LIS3MDL_TWI::readZ() {
-    return readAxis(OUT_Z);
 }
 
 float LIS3MDL_TWI::readGaussX() {
@@ -157,9 +134,7 @@ float LIS3MDL_TWI::readAzimut() {
         heading += TWO_PI;
     else if(heading > TWO_PI)
         heading -= TWO_PI;
-
     float headingDegrees = heading * RAD_TO_DEG;
-
     return headingDegrees;
 }
 
