@@ -121,9 +121,9 @@ void LIS3MDL_TWI::calibrateMatrix(const double calibrationMatrix[3][3], const do
 
 void LIS3MDL_TWI::readCalibrateGaussXYZ(float *x, float *y, float *z) {
     calibrate();
-    *x = _xCalibrate;
-    *y = _yCalibrate;
-    *z = _zCalibrate;
+    *x = _xCalibrate / _mult;
+    *y = _yCalibrate / _mult;
+    *z = _zCalibrate / _mult;
 }
 
 float LIS3MDL_TWI::readAzimut() {
