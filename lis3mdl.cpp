@@ -52,6 +52,15 @@ void LIS3MDL_TWI::setRange(uint8_t range) {
     writeCtrlReg2();
 }
 
+void LIS3MDL_TWI::sleep(bool enable) {
+    if (enable)
+        _ctrlReg3 |= (3 << 0);
+    else
+        _ctrlReg3 &= ~(3 << 0);
+
+    writeCtrlReg3();
+}
+
 float LIS3MDL_TWI::readGaussX() {
     return readX() / _mult;
 }
