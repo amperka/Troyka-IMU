@@ -48,17 +48,23 @@ void AxisHw::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
     Wire.write(OUT_X | (1 << 7));  // assert MSB to enable register address auto-increment
     Wire.endTransmission();
 
-    uint8_t burstSize = 6;
+    constexpr uint8_t burstSize = 6;
+    static_assert (burstSize % sizeof(int16_t) == 0, "burstSize must be even");
+    union
+    {
+        uint8_t byteValues[burstSize];
+        int16_t wordValues[burstSize/sizeof (int16_t)];
+    };
+
     Wire.requestFrom(_addr, burstSize);
-    uint8_t values[burstSize];
     for (uint8_t i = 0; i < burstSize; i++) {
         waitForData();
-        values[i] = Wire.read();
+        byteValues[i] = Wire.read();
     }
     
-    *x = *((int16_t*)&values[0]);
-    *y = *((int16_t*)&values[2]);
-    *z = *((int16_t*)&values[4]);
+    *x = wordValues[0];
+    *y = wordValues[1];
+    *z = wordValues[2];
 }
 
 void AxisHw::writeCtrlReg1(){
