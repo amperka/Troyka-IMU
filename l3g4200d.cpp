@@ -75,29 +75,28 @@ float L3G4200D_TWI::readDegPerSecZ() {
 }
 
 float L3G4200D_TWI::readRadPerSecX() {
-    return readX() * _mult * DEG_TO_RAD;
+    return readDegPerSecX() * DEG_TO_RAD;
 }
 
 float L3G4200D_TWI::readRadPerSecY() {
-    return readY() * _mult * DEG_TO_RAD;
+    return readDegPerSecY() * DEG_TO_RAD;
 }
 
 float L3G4200D_TWI::readRadPerSecZ() {
-    return readZ() * _mult * DEG_TO_RAD;
+    return readDegPerSecZ() * DEG_TO_RAD;
 }
 
 void L3G4200D_TWI::readDegPerSecXYZ(float *gx, float *gy, float *gz) {
     int16_t x, y, z;
     readXYZ(&x, &y, &z);
-    *gx = (float)x * _mult;
-    *gy = (float)y * _mult;
-    *gz = (float)z * _mult;
+    *gx = x * _mult;
+    *gy = y * _mult;
+    *gz = z * _mult;
 }
 
 void L3G4200D_TWI::readRadPerSecXYZ(float *gx, float *gy, float *gz) {
-    int16_t x, y, z;
-    readXYZ(&x, &y, &z);
-    *gx = (float)x * _mult * DEG_TO_RAD;
-    *gy = (float)y * _mult * DEG_TO_RAD;
-    *gz = (float)z * _mult * DEG_TO_RAD;
+    readDegPerSecXYZ(gx, gy, gz);
+    (*gx) *= DEG_TO_RAD;
+    (*gy) *= DEG_TO_RAD;
+    (*gz) *= DEG_TO_RAD;
 }

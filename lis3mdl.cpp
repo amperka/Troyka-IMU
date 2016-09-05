@@ -52,6 +52,15 @@ void LIS3MDL_TWI::setRange(uint8_t range) {
     writeCtrlReg2();
 }
 
+void LIS3MDL_TWI::sleep(bool enable) {
+    if (enable)
+        _ctrlReg3 |= (3 << 0);
+    else
+        _ctrlReg3 &= ~(3 << 0);
+
+    writeCtrlReg3();
+}
+
 float LIS3MDL_TWI::readGaussX() {
     return readX() / _mult;
 }
@@ -110,13 +119,8 @@ void LIS3MDL_TWI::calibrate() {
 }
 
 void LIS3MDL_TWI::calibrateMatrix(const double calibrationMatrix[3][3], const double bias[3]) {
-    for(int i = 0; i < 3; i++)
-        _bias[i] = bias[i];
-
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++)
-        _calibrationMatrix[i][j] = calibrationMatrix[i][j];
-    }  
+    memcpy (_bias, bias, 3 * sizeof (double));
+    memcpy (_calibrationMatrix, calibrationMatrix, 3 * 3 * sizeof (double));
 }
 
 void LIS3MDL_TWI::readCalibrateGaussXYZ(float *x, float *y, float *z) {

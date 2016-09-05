@@ -15,6 +15,7 @@ class LIS3MDL_TWI : public AxisHw
 public:
     LIS3MDL_TWI(uint8_t addr = LIS3MDL_TWI_ADDRESS);
     void begin();
+    void sleep(bool enable);
     void setRange(uint8_t range);
     void calibrateMatrix(const double calibrationMatrix[3][3], const double bias[3]);
     void calibrate();

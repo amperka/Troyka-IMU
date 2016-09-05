@@ -71,29 +71,28 @@ float LIS331DLH_TWI::readGZ() {
 }
 
 float LIS331DLH_TWI::readAX() {
-    return readX()*_mult * G;
+    return readGX() * G;
 }
 
 float LIS331DLH_TWI::readAY() {
-    return readY() * _mult * G;
+    return readGY() * G;
 }
 
 float LIS331DLH_TWI::readAZ() {
-    return readZ() * _mult * G;
+    return readGZ() * G;
 }
 
 void LIS331DLH_TWI::readGXYZ(float *gx, float *gy, float *gz) {
     int16_t x, y, z;
     readXYZ(&x, &y, &z);
-    *gx = (float)x * _mult;
-    *gy = (float)y * _mult;
-    *gz = (float)z * _mult;
+    *gx = x * _mult;
+    *gy = y * _mult;
+    *gz = z * _mult;
 }
 
 void LIS331DLH_TWI::readAXYZ(float *ax, float *ay, float *az) {
-    int16_t x, y, z;
-    readXYZ(&x, &y, &z);
-    *ax = (float)x * _mult * G;
-    *ay = (float)y * _mult * G;
-    *az = (float)z * _mult * G;
+    readGXYZ(ax, ay, az);
+    (*ax) *= G;
+    (*ay) *= G;
+    (*az) *= G;
 }
