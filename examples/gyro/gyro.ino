@@ -37,7 +37,7 @@ void loop()
 /*
   // вывод угловой скорости в градусах в секунду относительно оси X, Y и Z
   float x, y, z;
-  gyro.readXYZ_DegPerSec(&x, &y, &z);
+  gyro.readDegPerSecXYZ(&x, &y, &z);
   Serial.print(x);
   Serial.print("\t\t");
   Serial.print(y);
