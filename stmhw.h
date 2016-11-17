@@ -1,8 +1,15 @@
 #ifndef HW_H
 #define HW_H
 
-#include <stdint.h>
+#if defined(__AVR__) || defined(__SAMD21G18A__)
+#define WIRE_IMU Wire
 
+#elif defined(__SAM3X8E__) || defined(__SAM3A8C__) || defined(__SAM3A4C__)
+#define WIRE_IMU Wire1
+#endif
+
+#include <stdint.h>
+#include <Arduino.h>
 class AxisHw
 {
 private:
@@ -17,7 +24,7 @@ public:
     int16_t readX();
     int16_t readY();
     int16_t readZ();
-
+    void findModules();
     void readXYZ(int16_t *x, int16_t *y, int16_t *z);
 
 protected:

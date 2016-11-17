@@ -40,7 +40,7 @@ void L3G4200D_TWI::setRange(uint8_t range) {
 
 void L3G4200D_TWI::begin() {
     // подключаемся к шине I²C
-    Wire.begin();
+    WIRE_IMU.begin();
     // включаем координаты x, y, z
     _ctrlReg1 |= (1 << 0);
     _ctrlReg1 |= (1 << 1);

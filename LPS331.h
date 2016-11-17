@@ -2,7 +2,7 @@
 #define LPS331_h
 
 #include <Arduino.h> // for byte data type
-
+#include "stmhw.h"
 // SA0 states
 
 #define LPS331_SA0_LOW  0

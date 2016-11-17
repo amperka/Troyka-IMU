@@ -28,32 +28,32 @@ int16_t AxisHw::readAxis(uint8_t reg) {
 }
 
 inline void AxisHw::waitForData() {
-    while (Wire.available() < 1)
+    while (WIRE_IMU.available() < 1)
         continue;
 }
 
 uint8_t AxisHw::readByte(uint8_t reg) {
     uint8_t value;
-    Wire.beginTransmission(_addr);
-    Wire.write(reg);
-    Wire.endTransmission();
-    Wire.requestFrom(_addr, 1u);
+    WIRE_IMU.beginTransmission(_addr);
+    WIRE_IMU.write(reg);
+    WIRE_IMU.endTransmission();
+    WIRE_IMU.requestFrom(_addr, 1u);
     waitForData();
-    value = Wire.read();
+    value = WIRE_IMU.read();
     return value;
 }
 
 void AxisHw::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
-    Wire.beginTransmission(_addr);
-    Wire.write(OUT_X | (1 << 7));  // assert MSB to enable register address auto-increment
-    Wire.endTransmission();
+    WIRE_IMU.beginTransmission(_addr);
+    WIRE_IMU.write(OUT_X | (1 << 7));  // assert MSB to enable register address auto-increment
+    WIRE_IMU.endTransmission();
 
     uint8_t burstSize = 6;
-    Wire.requestFrom(_addr, burstSize);
+    WIRE_IMU.requestFrom(_addr, burstSize);
     uint8_t values[burstSize];
     for (uint8_t i = 0; i < burstSize; i++) {
         waitForData();
-        values[i] = Wire.read();
+        values[i] = WIRE_IMU.read();
     }
     
     *x = *((int16_t*)&values[0]);
@@ -62,36 +62,77 @@ void AxisHw::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
 }
 
 void AxisHw::writeCtrlReg1(){
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG1);
-    Wire.write(_ctrlReg1);
-    Wire.endTransmission();
+    WIRE_IMU.beginTransmission(_addr);
+    WIRE_IMU.write(CTRL_REG1);
+    WIRE_IMU.write(_ctrlReg1);
+    WIRE_IMU.endTransmission();
 }
 
 void AxisHw::writeCtrlReg2(){
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG2);
-    Wire.write(_ctrlReg2);
-    Wire.endTransmission();
+    WIRE_IMU.beginTransmission(_addr);
+    WIRE_IMU.write(CTRL_REG2);
+    WIRE_IMU.write(_ctrlReg2);
+    WIRE_IMU.endTransmission();
 }
 
 void AxisHw::writeCtrlReg3(){
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG3);
-    Wire.write(_ctrlReg3);
-    Wire.endTransmission();
+    WIRE_IMU.beginTransmission(_addr);
+    WIRE_IMU.write(CTRL_REG3);
+    WIRE_IMU.write(_ctrlReg3);
+    WIRE_IMU.endTransmission();
 }
 
 void AxisHw::writeCtrlReg4(){
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG4);
-    Wire.write(_ctrlReg4);
-    Wire.endTransmission();
+    WIRE_IMU.beginTransmission(_addr);
+    WIRE_IMU.write(CTRL_REG4);
+    WIRE_IMU.write(_ctrlReg4);
+    WIRE_IMU.endTransmission();
 }
 
 void AxisHw::writeCtrlReg5(){
-    Wire.beginTransmission(_addr);
-    Wire.write(CTRL_REG5);
-    Wire.write(_ctrlReg5);
-    Wire.endTransmission();
+    WIRE_IMU.beginTransmission(_addr);
+    WIRE_IMU.write(CTRL_REG5);
+    WIRE_IMU.write(_ctrlReg5);
+    WIRE_IMU.endTransmission();
+}
+
+void AxisHw::findModules() {
+
+    char error, address;
+  int nDevices;
+  Serial.println("Scanning...");
+ 
+  nDevices = 0;
+  for(address = 1; address < 127; address++ )
+  {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+    WIRE_IMU.beginTransmission(address);
+    error = WIRE_IMU.endTransmission();
+ 
+    if (error == 0)
+    {
+      Serial.print("I2C device found at address 0x");
+      if (address<16)
+        Serial.print("0");
+      Serial.print(address,HEX);
+      Serial.println("  !");
+ 
+      nDevices++;
+    }
+    else if (error==4)
+    {
+      Serial.print("Unknow error at address 0x");
+      if (address<16)
+        Serial.print("0");
+      Serial.println(address,HEX);
+    }    
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found\n");
+  else
+    Serial.println("done\n");
+ 
+  delay(5000);           // wait 5 seconds for next scan
 }

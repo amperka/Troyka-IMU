@@ -16,7 +16,7 @@ LIS3MDL_TWI::LIS3MDL_TWI(uint8_t addr) : AxisHw(addr) {
 }
 
 void LIS3MDL_TWI::begin() {
-    Wire.begin();
+    WIRE_IMU.begin();
     // устанавливаем чувствительность
     setRange(RANGE_4_GAUSS);
     writeCtrlReg3();

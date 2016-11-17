@@ -12,7 +12,7 @@ LIS331DLH_TWI::LIS331DLH_TWI(uint8_t addr) : AxisHw(addr) {
 
 void LIS331DLH_TWI::begin() {
     // подключаемся к шине I²C
-    Wire.begin();
+    WIRE_IMU.begin();
     // включаем координаты x, y, z
     _ctrlReg1 |= (1 << 0);
     _ctrlReg1 |= (1 << 1);
