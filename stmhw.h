@@ -24,7 +24,6 @@ public:
     int16_t readX();
     int16_t readY();
     int16_t readZ();
-    void findModules();
     void readXYZ(int16_t *x, int16_t *y, int16_t *z);
 
 protected:
