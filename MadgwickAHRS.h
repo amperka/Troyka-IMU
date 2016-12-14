@@ -10,7 +10,7 @@ class Madgwick {
 
 public:
     Madgwick();
-    void printQuaternions();
+    void readQuaternions(float *q0, float *q1, float *q2, float *q3);
     void reset();
     void setKoeff(float sampleFreq, float beta);
     void update(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz);

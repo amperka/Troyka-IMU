@@ -27,12 +27,8 @@ float gx, gy, gz, ax, ay, az, mx, my, mz;
 float yaw, pitch, roll;
  
 // переменная для хранения частоты выборок фильтра
-float fps;
- 
-// переменная для подсчета времени, чтобы определять
-// частоту обновления каждого фильтра
-unsigned long prevMillis;
- 
+float fps = 100;
+
 // калибровочные значения компаса
 // полученные в калибровочной матрице из примера «compassCalibrateMatrixx»
 const double compassCalibrationBias[3] = {
@@ -46,7 +42,7 @@ const double compassCalibrationMatrix[3][3] = {
   {0.008, 1.767, -0.016},
   {-0.018, 0.077, 1.782}
 };
- 
+
 void setup()
 {
   // открываем последовательный порт
@@ -57,8 +53,6 @@ void setup()
   gyro.begin();
   // инициализация компаса
   compass.begin();
-  // задаем начальное ненулевое значение в переменную
-  prevMillis = millis();
   // калибровка компаса
   compass.calibrateMatrix(compassCalibrationMatrix, compassCalibrationBias);
 }
@@ -66,20 +60,13 @@ void setup()
 void loop()
 {
   // запоминаем текущее время
-  unsigned long currMillis = millis();
-  // вычисляем затраченное время на обработку данных
-  // предыдущего запроса фильтра
-  unsigned long deltaMillis = currMillis - prevMillis;
-  // вычисляем частоту обработки фильтра
-  fps = 1000 / deltaMillis;
- 
+  unsigned long startMillis = millis();
   // считываем данные с акселерометра в единицах G
   accel.readGXYZ(&ax, &ay, &az);
   // считываем данные с гироскопа в радианах в секунду
   gyro.readRadPerSecXYZ(&gx, &gy, &gz);
   // считываем данные с компаса в Гауссах
   compass.readCalibrateGaussXYZ(&mx, &my, &mz);
- 
   // устанавливаем коэффициенты фильтра
   filter.setKoeff(fps, BETA);
   // обновляем входные данные в фильтр
@@ -89,10 +76,20 @@ void loop()
     int val = Serial.read();
     // если пришёл символ 's'
     if (val == 's') {
-    // выводим кватернионы в serial-порт
-    filter.printQuaternions();
+      float q0, q1, q2, q3;
+      filter.readQuaternions(&q0, &q1, &q2, &q3);
+      // выводим кватернионы в serial-порт
+      Serial.print(q0);
+      Serial.print(",");
+      Serial.print(q1);
+      Serial.print(",");
+      Serial.print(q2);
+      Serial.print(",");
+      Serial.println(q3);
     }
   }
-  // сохраняем текущее время
-  prevMillis = currMillis;
+  // вычисляем затраченное время на обработку данных
+  unsigned long deltaMillis = millis() - startMillis;
+  // вычисляем частоту обработки фильтра
+  fps = 1000 / deltaMillis;
 }

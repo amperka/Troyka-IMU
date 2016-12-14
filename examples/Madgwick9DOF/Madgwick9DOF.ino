@@ -23,11 +23,7 @@ float gx, gy, gz, ax, ay, az, mx, my, mz;
 float yaw, pitch, roll;
  
 // переменная для хранения частоты выборок фильтра
-float fps;
- 
-// переменная для подсчета времени, чтобы определять
-// частоту обновления каждого фильтра
-unsigned long prevMillis;
+float fps = 100;
  
 // калибровочные значения компаса
 // полученные в калибровочной матрице из примера «compassCalibrateMatrixx»
@@ -54,8 +50,7 @@ void setup()
   gyro.begin();
   // инициализация компаса
   compass.begin();
-  // задаем начальное ненулевое значение в переменную
-  prevMillis = millis();
+
   // калибровка компаса
   compass.calibrateMatrix(compassCalibrationMatrix, compassCalibrationBias);
   // выводим сообщение об удачной инициализации
@@ -65,13 +60,8 @@ void setup()
 void loop()
 {
   // запоминаем текущее время
-  unsigned long currMillis = millis();
-  // вычисляем затраченное время на обработку данных
-  // предыдущего запроса фильтра
-  unsigned long deltaMillis = currMillis - prevMillis;
-  // вычисляем частоту обработки фильтра
-  fps = 1000 / deltaMillis;
- 
+  unsigned long startMillis = millis();
+
   // считываем данные с акселерометра в единицах G
   accel.readGXYZ(&ax, &ay, &az);
   // считываем данные с гироскопа в радианах в секунду
@@ -99,7 +89,9 @@ void loop()
   Serial.print("roll: ");
   Serial.println(roll);
  
-  // сохраняем текущее время
-  prevMillis = currMillis;
+  // вычисляем затраченное время на обработку данных
+  unsigned long deltaMillis = millis() - startMillis;
+  // вычисляем частоту обработки фильтра
+  fps = 1000 / deltaMillis;
 }
 
