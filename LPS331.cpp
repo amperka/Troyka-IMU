@@ -2,20 +2,11 @@
 #include <Wire.h>
 #include <GOST4401_81.h>
 
-// Defines ///////////////////////////////////////////////////////////
-
-// The Arduino two-WIRE_IMU interface uses a 7-bit number for the address,
-// and sets the last bit correctly based on reads and writes
-#define LPS331AP_ADDRESS_SA0_LOW  0b1011100
-#define LPS331AP_ADDRESS_SA0_HIGH 0b1011101
-
 // Constructors //////////////////////////////////////////////////////
 
-LPS331::LPS331(void)
+LPS331::LPS331(uint8_t addr)
 {
-  // Pololu board pulls SA0 high, so default assumption is that it is
-  // high
-  address = LPS331AP_ADDRESS_SA0_LOW;
+  address = addr;
 }
 
 // Public Methods ////////////////////////////////////////////////////

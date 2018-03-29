@@ -3,10 +3,12 @@
 
 #include "stmhw.h"
 
-#define L3G4200D_TWI_ADDRESS 0b01101000
-#define RANGE_250DPS         0
-#define RANGE_500DPS         1
-#define RANGE_2000DPS        2
+#define L3G4200D_TWI_ADDRESS     0b01101000
+#define L3G4200D_TWI_ADDRESS_V2  0b01101001
+
+#define RANGE_250DPS             0
+#define RANGE_500DPS             1
+#define RANGE_2000DPS            2
 
 class L3G4200D_TWI : public AxisHw
 {
