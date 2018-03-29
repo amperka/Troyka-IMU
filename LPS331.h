@@ -3,6 +3,14 @@
 
 #include <Arduino.h> // for byte data type
 #include "stmhw.h"
+
+// The Arduino two-WIRE_IMU interface uses a 7-bit number for the address,
+// and sets the last bit correctly based on reads and writes
+#define LPS331AP_ADDRESS_SA0_LOW  0b1011100
+#define LPS331AP_ADDRESS_SA0_HIGH 0b1011101
+#define LPS331AP_TWI_ADDRESS      0b1011100
+#define LPS331AP_TWI_ADDRESS_V2   0b1011101
+
 // SA0 states
 
 #define LPS331_SA0_LOW  0
@@ -51,7 +59,7 @@
 class LPS331
 {
   public:
-    LPS331(void);
+    LPS331(uint8_t addr = LPS331AP_TWI_ADDRESS);
 
     void begin();
 
