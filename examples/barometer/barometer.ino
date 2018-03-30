@@ -1,9 +1,10 @@
-// библиотека для работы I²C
-#include <Wire.h>
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
 // создаём объект для работы с барометром
-Barometer barometer;
+Barometer barometer(BARO_ADDRESS_V1);
+
+// если напаяны перемычки, устройство доступно по новому дресу
+// Barometer barometer(BARO_ADDRESS_V2);
 
 void setup()
 {

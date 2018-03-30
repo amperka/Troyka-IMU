@@ -1,15 +1,13 @@
-// скетч используется для калибровки компаса
-// подробности читайте на:
-// http://wiki.amperka.ru/продукты:troyka-compass
- 
-// библиотека для работы I²C
-#include <Wire.h>
+
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
  
 // создаём объект для работы с компасом
-Compass compass;
- 
+Compass compass(COMPASS_ADDRESS_V1);
+
+// если напаяна перемычка, устройство доступно по новому адресу
+// Compass compass(COMPASS_ADDRESS_V2);
+
 void setup()
 {
   // открываем последовательный порт

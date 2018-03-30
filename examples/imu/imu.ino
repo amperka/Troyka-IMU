@@ -1,17 +1,21 @@
-// библиотека для работы I²C
-#include <Wire.h>
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
  
 // создаём объект для работы с гироскопом
-Gyroscope gyro;
+Gyroscope gyro(GYRO_ADDRESS_V1);
 // создаём объект для работы с акселерометром
-Accelerometer accel;
+Accelerometer accel(ACCEL_ADDRESS_V1);
 // создаём объект для работы с компасом
-Compass compass;
+Compass compass(COMPASS_ADDRESS_V1);
 // создаём объект для работы с барометром
-Barometer barometer;
- 
+Barometer barometer(BARO_ADDRESS_V1);
+
+// если напаяны перемычки, устройства доступны по новому адресу
+// Gyroscope gyro(GYRO_ADDRESS_V2);
+// Accelerometer accel(ACCEL_ADDRESS_V2);
+// Compass compass(COMPASS_ADDRESS_V2);
+// Barometer barometer(BARO_ADDRESS_V2);
+
 // калибровочные значения компаса
 // полученные в калибровочной матрице из примера «compassCalibrateMatrix»
 const double compassCalibrationBias[3] = {

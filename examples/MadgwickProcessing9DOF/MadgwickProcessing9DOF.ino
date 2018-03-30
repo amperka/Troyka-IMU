@@ -1,9 +1,7 @@
 // скетч для вывода кватернионов в serial-порт
 // для дальнейшего графического просмотра ориентации объекта
 // в среде processing «MadgwickProcessingDraw9DOF.pde»
- 
-// библиотека для работы I²C
-#include <Wire.h>
+
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
  
@@ -14,11 +12,16 @@
 Madgwick filter;
  
 // создаём объект для работы с акселерометром
-Accelerometer accel;
+Accelerometer accel(ACCEL_ADDRESS_V1);
 // создаём объект для работы с гироскопом
-Gyroscope gyro;
+Gyroscope gyro(GYRO_ADDRESS_V1);
 // создаём объект для работы с компасом
-Compass compass;
+Compass compass(COMPASS_ADDRESS_V1);
+ 
+// если напаяны перемычки, устройства доступны по новым адресам
+// Accelerometer accel(ACCEL_ADDRESS_V2);
+// Gyroscope gyro(GYRO_ADDRESS_V2);
+// Compass compass(COMPASS_ADDRESS_V2);
  
 // переменные для данных с гироскопа, акселерометра и компаса
 float gx, gy, gz, ax, ay, az, mx, my, mz;

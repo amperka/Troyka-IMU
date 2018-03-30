@@ -5,43 +5,46 @@
 #include "LPS331.h"
 #include "MadgwickAHRS.h"
 
-#define ACCEL_ADDRESS_V1    0b0011000
-#define ACCEL_ADDRESS_V2    0b0011001
+// Accelerometer
+#define ACCEL_ADDRESS_V1    LIS331DLH_TWI_ADDRESS
+#define ACCEL_ADDRESS_V2    LIS331DLH_TWI_ADDRESS_V2
 
-#define GYRO_ADDRESS_V1     0b01101000
-#define GYRO_ADDRESS_V2     0b01101001
+// Gyroscope
+#define GYRO_ADDRESS_V1     L3G4200D_TWI_ADDRESS
+#define GYRO_ADDRESS_V2     L3G4200D_TWI_ADDRESS_V2
 
-#define COMPASS_ADDRESS_V1  0b0011100
-#define COMPASS_ADDRESS_V2  0b0011110
+// Compass
+#define COMPASS_ADDRESS_V1  LIS3MDL_TWI_ADDRESS
+#define COMPASS_ADDRESS_V2  LIS3MDL_TWI_ADDRESS_V2
 
-#define BARO_ADDRESS_V1     0b1011100
-#define BARO_ADDRESS_V2     0b1011101
-
+// Barometer
+#define BARO_ADDRESS_V1     LPS331AP_TWI_ADDRESS
+#define BARO_ADDRESS_V2     LPS331AP_TWI_ADDRESS_V2
 
 class Accelerometer : public LIS331DLH_TWI
 {
-	public:
-		Accelerometer(uint8_t addr = LIS331DLH_TWI_ADDRESS) :
-			LIS331DLH_TWI(addr) {}
+  public:
+    Accelerometer(uint8_t addr = ACCEL_ADDRESS_V1) :
+	  LIS331DLH_TWI(addr) {}
 };
 
 class Gyroscope : public L3G4200D_TWI
 {
-	public:
-		Gyroscope(uint8_t addr = L3G4200D_TWI_ADDRESS) : 
-			L3G4200D_TWI(addr) {}
+  public:
+    Gyroscope(uint8_t addr = GYRO_ADDRESS_V1) : 
+	  L3G4200D_TWI(addr) {}
 };
 
 class Compass : public LIS3MDL_TWI
 {
-	public:
-		Compass(uint8_t addr = LIS3MDL_TWI_ADDRESS) :
-			LIS3MDL_TWI(addr) {}
+  public:
+    Compass(uint8_t addr = COMPASS_ADDRESS_V1) :
+      LIS3MDL_TWI(addr) {}
 };
 
 class Barometer : public LPS331
 {
-	public:
-		Barometer(uint8_t addr = LPS331AP_TWI_ADDRESS) :
-			LPS331(addr) {}
+  public:
+    Barometer(uint8_t addr = BARO_ADDRESS_V1) :
+      LPS331(addr) {}
 };
