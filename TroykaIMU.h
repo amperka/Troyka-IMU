@@ -21,7 +21,6 @@
 #define BARO_ADDRESS_V1     LPS331AP_TWI_ADDRESS
 #define BARO_ADDRESS_V2     LPS331AP_TWI_ADDRESS_V2
 
-
 class Accelerometer : public LIS331DLH_TWI
 {
   public:
