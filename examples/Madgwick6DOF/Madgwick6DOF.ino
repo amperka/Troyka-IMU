@@ -1,5 +1,3 @@
-// библиотека для работы I²C
-#include <Wire.h>
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
  
@@ -10,9 +8,13 @@
 Madgwick filter;
  
 // создаём объект для работы с акселерометром
-Accelerometer accel;
+Accelerometer accel(ACCEL_ADDRESS_V1);
 // создаём объект для работы с гироскопом
-Gyroscope gyro;
+Gyroscope gyro(GYRO_ADDRESS_V1);
+
+// если напаяны перемычки, устройства доступны по новым адресам
+// Accelerometer accel(ACCEL_ADDRESS_V2);
+// Gyroscope gyro(GYRO_ADDRESS_V2);
  
 // переменные для данных с гироскопов, акселерометров
 float gx, gy, gz, ax, ay, az;

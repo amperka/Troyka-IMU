@@ -4,7 +4,11 @@
 #include <TroykaIMU.h>
  
 // создаём объект для работы с гироскопом
-Gyroscope gyro;
+Gyroscope gyro(GYRO_ADDRESS_V1);
+
+// если напаяна перемычка, устройство доступно по новому адресу
+// Gyroscope gyro(GYRO_ADDRESS_V2);
+ 
  
 void setup()
 {

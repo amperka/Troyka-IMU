@@ -3,12 +3,13 @@
 
 #include "stmhw.h"
 
-#define LIS3MDL_TWI_ADDRESS 0b0011100
+#define LIS3MDL_TWI_ADDRESS     0b0011100
+#define LIS3MDL_TWI_ADDRESS_V2  0b0011110
 
-#define RANGE_4_GAUSS   0
-#define RANGE_8_GAUSS   1
-#define RANGE_12_GAUSS  2
-#define RANGE_16_GAUSS  3
+#define RANGE_4_GAUSS           0
+#define RANGE_8_GAUSS           1
+#define RANGE_12_GAUSS          2
+#define RANGE_16_GAUSS          3
 
 class LIS3MDL_TWI : public AxisHw
 {

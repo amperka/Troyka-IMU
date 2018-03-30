@@ -3,7 +3,8 @@
 
 #include "stmhw.h"
 
-#define LIS331DLH_TWI_ADDRESS 0b0011000
+#define LIS331DLH_TWI_ADDRESS     0b0011000
+#define LIS331DLH_TWI_ADDRESS_V2  0b0011001
 
 #define RANGE_2G        2
 #define RANGE_4G        4

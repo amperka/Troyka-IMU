@@ -1,11 +1,12 @@
-// библиотека для работы I²C
-#include <Wire.h>
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
  
 // создаём объект для работы с акселерометром
-Accelerometer accel;
+Accelerometer accel(ACCEL_ADDRESS_V1);
  
+// если напаяна перемычка, устройство доступно по новому адресу
+// Accelerometer accel(ACCEL_ADDRESS_V2);
+
 void setup()
 {
   // открываем последовательный порт
