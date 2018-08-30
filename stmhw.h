@@ -1,7 +1,7 @@
 #ifndef HW_H
 #define HW_H
 
-#if defined(__AVR__) || defined(__SAMD21G18A__)
+#if defined(__AVR__) || defined(__SAMD21G18A__) || defined(ESP8266)
 #define WIRE_IMU Wire
 
 #elif defined(__SAM3X8E__) || defined(__SAM3A8C__) || defined(__SAM3A4C__)
