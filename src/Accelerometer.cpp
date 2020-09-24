@@ -7,11 +7,12 @@
 #define G 9.8
 
 LIS331DLH::LIS331DLH(uint8_t addr)
-    : IMU(addr) { }
+    : BaseIMU(addr) { }
 
-void LIS331DLH::begin() {
+void LIS331DLH::begin(TwoWire& wire) {
     // подключаемся к шине I²C
-    WIRE_IMU.begin();
+    _wire = &wire;
+    _wire->begin();
     // включаем координаты x, y, z
     _ctrlReg1 |= (1 << 0);
     _ctrlReg1 |= (1 << 1);

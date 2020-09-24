@@ -1,7 +1,7 @@
 #ifndef __GYROSCOPE_H__
 #define __GYROSCOPE_H__
 
-#include "IMU.h"
+#include "BaseIMU.h"
 
 #define L3G4200D_ADDRESS 0b01101000
 #define L3G4200D_ADDRESS_V2 0b01101001
@@ -10,10 +10,10 @@
 #define RANGE_500DPS 1
 #define RANGE_2000DPS 2
 
-class L3G4200D : public IMU {
+class L3G4200D : public BaseIMU {
 public:
     L3G4200D(uint8_t addr = L3G4200D_ADDRESS);
-    void begin();
+    void begin(TwoWire &wire = Wire);
     void sleep(bool enable);
     void setRange(uint8_t range);
     float readDegPerSecX();

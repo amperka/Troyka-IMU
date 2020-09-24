@@ -11,10 +11,11 @@
 #define SENS_FS_16 1711
 
 LIS3MDL::LIS3MDL(uint8_t addr)
-    : IMU(addr) { }
+    : BaseIMU(addr) { }
 
-void LIS3MDL::begin() {
-    WIRE_IMU.begin();
+void LIS3MDL::begin(TwoWire& wire) {
+    _wire = &wire;
+    _wire->begin();
     // устанавливаем чувствительность
     setRange(RANGE_4_GAUSS);
     writeCtrlReg3();

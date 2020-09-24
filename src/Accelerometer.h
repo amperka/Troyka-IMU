@@ -1,7 +1,7 @@
 #ifndef __ACCELEROMETER_H__
 #define __ACCELEROMETER_H__
 
-#include "IMU.h"
+#include "BaseIMU.h"
 
 #define LIS331DLH_ADDRESS 0b0011000
 #define LIS331DLH_ADDRESS_V2 0b0011001
@@ -10,10 +10,10 @@
 #define RANGE_4G 4
 #define RANGE_8G 8
 
-class LIS331DLH : public IMU {
+class LIS331DLH : public BaseIMU {
 public:
     LIS331DLH(uint8_t addr = LIS331DLH_ADDRESS);
-    void begin();
+    void begin(TwoWire &wire = Wire);
     void sleep(bool enable);
     void setRange(uint8_t range);
     float readGX();

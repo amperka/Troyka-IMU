@@ -1,7 +1,7 @@
 #ifndef __BAROMETER_H__
 #define __BAROMETER_H__
 
-#include "IMU.h"
+#include "BaseIMU.h"
 
 // The Arduino two-WIRE_IMU interface uses a 7-bit number for the address,
 // and sets the last bit correctly based on reads and writes
@@ -58,12 +58,9 @@
 class LPS331 {
 public:
     LPS331(uint8_t addr = LPS331AP_TWI_ADDRESS);
-
-    void begin();
-
+    void begin(TwoWire &wire = Wire);
     void writeReg(byte reg, byte value);
     byte readReg(byte reg);
-
     float readPressurePascals(void);
     float readPressureMillibars(void);
     float readPressureInchesHg(void);
@@ -73,7 +70,6 @@ public:
     float readTemperatureC(void);
     float readTemperatureF(void);
     int16_t readTemperatureRaw(void);
-
     static float GOST4401_altitude(float pressure_pascals);
     static float pressureToAltitudeMeters(float pressure_mbar,
                                           float altimeter_setting_mbar
@@ -82,8 +78,8 @@ public:
                                         float altimeter_setting_inHg = 29.9213);
 
 private:
+    TwoWire *_wire;
     byte address;
-
     bool autoDetectAddress(void);
     bool testWhoAmI(void);
 };

@@ -9,7 +9,7 @@
 #define SENS_FS_2000 0.07
 
 L3G4200D::L3G4200D(uint8_t addr)
-    : IMU(addr) { }
+    : BaseIMU(addr) { }
 
 void L3G4200D::setRange(uint8_t range) {
     switch (range) {
@@ -35,9 +35,10 @@ void L3G4200D::setRange(uint8_t range) {
     writeCtrlReg4();
 }
 
-void L3G4200D::begin() {
+void L3G4200D::begin(TwoWire& wire) {
     // подключаемся к шине I²C
-    WIRE_IMU.begin();
+    _wire = &wire;
+    _wire->begin();
     // включаем координаты x, y, z
     _ctrlReg1 |= (1 << 0);
     _ctrlReg1 |= (1 << 1);

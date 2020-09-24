@@ -8,30 +8,31 @@ LPS331::LPS331(uint8_t addr) { address = addr; }
 // Public Methods ////////////////////////////////////////////////////
 
 // sets or detects slave address; returns bool indicating success
-void LPS331::begin() {
-    WIRE_IMU.begin();
+void LPS331::begin(TwoWire& wire) {
+    _wire = &wire;
+    _wire->begin();
     writeReg(LPS331_CTRL_REG1, 0b11100000);
     delay(100);
 }
 
 // writes register
 void LPS331::writeReg(byte reg, byte value) {
-    WIRE_IMU.beginTransmission(address);
-    WIRE_IMU.write(reg);
-    WIRE_IMU.write(value);
-    WIRE_IMU.endTransmission();
+    _wire->beginTransmission(address);
+    _wire->write(reg);
+    _wire->write(value);
+    _wire->endTransmission();
 }
 
 // reads register
 byte LPS331::readReg(byte reg) {
     byte value;
 
-    WIRE_IMU.beginTransmission(address);
-    WIRE_IMU.write(reg);
-    WIRE_IMU.endTransmission(false); // restart
-    WIRE_IMU.requestFrom(address, (byte)1);
-    value = WIRE_IMU.read();
-    WIRE_IMU.endTransmission();
+    _wire->beginTransmission(address);
+    _wire->write(reg);
+    _wire->endTransmission(false); // restart
+    _wire->requestFrom(address, (byte)1);
+    value = _wire->read();
+    _wire->endTransmission();
 
     return value;
 }
@@ -59,18 +60,18 @@ float LPS331::readPressureMillimetersHg(void) {
 
 // reads pressure and returns raw 24-bit sensor output
 int32_t LPS331::readPressureRaw(void) {
-    WIRE_IMU.beginTransmission(address);
+    _wire->beginTransmission(address);
     // assert MSB to enable register address auto-increment
-    WIRE_IMU.write(LPS331_PRESS_OUT_XL | (1 << 7));
-    WIRE_IMU.endTransmission();
-    WIRE_IMU.requestFrom(address, (byte)3);
+    _wire->write(LPS331_PRESS_OUT_XL | (1 << 7));
+    _wire->endTransmission();
+    _wire->requestFrom(address, (byte)3);
 
-    while (WIRE_IMU.available() < 3)
+    while (_wire->available() < 3)
         ;
 
-    uint8_t pxl = WIRE_IMU.read();
-    uint8_t pl = WIRE_IMU.read();
-    uint8_t ph = WIRE_IMU.read();
+    uint8_t pxl = _wire->read();
+    uint8_t pl = _wire->read();
+    uint8_t ph = _wire->read();
 
     // combine bytes
     return (int32_t)(int8_t)ph << 16 | (uint16_t)pl << 8 | pxl;
@@ -93,17 +94,17 @@ float LPS331::readTemperatureF(void) {
 
 // reads temperature and returns raw 16-bit sensor output
 int16_t LPS331::readTemperatureRaw(void) {
-    WIRE_IMU.beginTransmission(address);
+    _wire->beginTransmission(address);
     // assert MSB to enable register address auto-increment
-    WIRE_IMU.write(LPS331_TEMP_OUT_L | (1 << 7));
-    WIRE_IMU.endTransmission();
-    WIRE_IMU.requestFrom(address, (byte)2);
+    _wire->write(LPS331_TEMP_OUT_L | (1 << 7));
+    _wire->endTransmission();
+    _wire->requestFrom(address, (byte)2);
 
-    while (WIRE_IMU.available() < 2)
+    while (_wire->available() < 2)
         ;
 
-    uint8_t tl = WIRE_IMU.read();
-    uint8_t th = WIRE_IMU.read();
+    uint8_t tl = _wire->read();
+    uint8_t th = _wire->read();
 
     // combine bytes
     return (int16_t)(th << 8 | tl);
