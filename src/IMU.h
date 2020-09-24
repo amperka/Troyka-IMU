@@ -11,21 +11,21 @@
 #define WIRE_IMU Wire1
 #endif
 
-class IMU
-{
+class IMU {
 private:
     uint8_t _addr;
 
     static inline void waitForData();
 
 public:
-    IMU(uint8_t addr) : _addr (addr) {}
+    IMU(uint8_t addr)
+        : _addr(addr) { }
 
     uint8_t readByte(uint8_t reg);
     int16_t readX();
     int16_t readY();
     int16_t readZ();
-    void readXYZ(int16_t *x, int16_t *y, int16_t *z);
+    void readXYZ(int16_t* x, int16_t* y, int16_t* z);
 
 protected:
     uint8_t _ctrlReg1;
