@@ -1,8 +1,7 @@
-#ifndef LPS331_h
-#define LPS331_h
+#ifndef __BAROMETER_H__
+#define __BAROMETER_H__
 
-#include <Arduino.h> // for byte data type
-#include "stmhw.h"
+#include "IMU.h"
 
 // The Arduino two-WIRE_IMU interface uses a 7-bit number for the address,
 // and sets the last bit correctly based on reads and writes
@@ -87,4 +86,4 @@ class LPS331
     bool testWhoAmI(void);
 };
 
-#endif
+#endif // __BAROMETER_H__

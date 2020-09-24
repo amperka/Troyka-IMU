@@ -1,5 +1,4 @@
-#include "stmhw.h"
-#include <Wire.h>
+#include "IMU.h"
 
 #define CTRL_REG1       0x20
 #define CTRL_REG2       0x21
@@ -11,28 +10,28 @@
 #define OUT_Y           0x2A
 #define OUT_Z           0x2C
 
-int16_t AxisHw::readX() {
+int16_t IMU::readX() {
     return readAxis(OUT_X);
 }
 
-int16_t AxisHw::readY() {
+int16_t IMU::readY() {
     return readAxis(OUT_Y);
 }
 
-int16_t AxisHw::readZ() {
+int16_t IMU::readZ() {
     return readAxis(OUT_Z);
 }
 
-int16_t AxisHw::readAxis(uint8_t reg) {
+int16_t IMU::readAxis(uint8_t reg) {
     return ((int16_t)readByte(reg + 1) << 8) | readByte(reg);
 }
 
-inline void AxisHw::waitForData() {
+inline void IMU::waitForData() {
     while (WIRE_IMU.available() < 1)
         continue;
 }
 
-uint8_t AxisHw::readByte(uint8_t reg) {
+uint8_t IMU::readByte(uint8_t reg) {
     uint8_t value;
     WIRE_IMU.beginTransmission(_addr);
     WIRE_IMU.write(reg);
@@ -43,7 +42,7 @@ uint8_t AxisHw::readByte(uint8_t reg) {
     return value;
 }
 
-void AxisHw::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
+void IMU::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
     WIRE_IMU.beginTransmission(_addr);
     WIRE_IMU.write(OUT_X | (1 << 7));  // assert MSB to enable register address auto-increment
     WIRE_IMU.endTransmission();
@@ -61,35 +60,35 @@ void AxisHw::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
     *z = *((int16_t*)&values[4]);
 }
 
-void AxisHw::writeCtrlReg1(){
+void IMU::writeCtrlReg1(){
     WIRE_IMU.beginTransmission(_addr);
     WIRE_IMU.write(CTRL_REG1);
     WIRE_IMU.write(_ctrlReg1);
     WIRE_IMU.endTransmission();
 }
 
-void AxisHw::writeCtrlReg2(){
+void IMU::writeCtrlReg2(){
     WIRE_IMU.beginTransmission(_addr);
     WIRE_IMU.write(CTRL_REG2);
     WIRE_IMU.write(_ctrlReg2);
     WIRE_IMU.endTransmission();
 }
 
-void AxisHw::writeCtrlReg3(){
+void IMU::writeCtrlReg3(){
     WIRE_IMU.beginTransmission(_addr);
     WIRE_IMU.write(CTRL_REG3);
     WIRE_IMU.write(_ctrlReg3);
     WIRE_IMU.endTransmission();
 }
 
-void AxisHw::writeCtrlReg4(){
+void IMU::writeCtrlReg4(){
     WIRE_IMU.beginTransmission(_addr);
     WIRE_IMU.write(CTRL_REG4);
     WIRE_IMU.write(_ctrlReg4);
     WIRE_IMU.endTransmission();
 }
 
-void AxisHw::writeCtrlReg5(){
+void IMU::writeCtrlReg5(){
     WIRE_IMU.beginTransmission(_addr);
     WIRE_IMU.write(CTRL_REG5);
     WIRE_IMU.write(_ctrlReg5);

@@ -1,5 +1,5 @@
-#ifndef MADGWICK_AHRS_H_
-#define MADGWICK_AHRS_H_
+#ifndef __MADGWICK_AHRS_H__
+#define __MADGWICK_AHRS_H__
 
 #include <math.h>
 
@@ -31,4 +31,5 @@ private:
     volatile float _q2 = 0.0f;
     volatile float _q3 = 0.0f;
 };
-#endif
+
+#endif // __MADGWICK_AHRS_H__

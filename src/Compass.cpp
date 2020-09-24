@@ -1,6 +1,4 @@
-#include <Wire.h>
-#include <Arduino.h>
-#include "lis3mdl.h"
+#include "Compass.h"
 
 #define ADR_FS_4        0x00
 #define ADR_FS_8        0x20
@@ -12,17 +10,17 @@
 #define SENS_FS_12      2281
 #define SENS_FS_16      1711
 
-LIS3MDL_TWI::LIS3MDL_TWI(uint8_t addr) : AxisHw(addr) {
+LIS3MDL::LIS3MDL(uint8_t addr) : IMU(addr) {
 }
 
-void LIS3MDL_TWI::begin() {
+void LIS3MDL::begin() {
     WIRE_IMU.begin();
     // устанавливаем чувствительность
     setRange(RANGE_4_GAUSS);
     writeCtrlReg3();
 }
 
-void LIS3MDL_TWI::setRange(uint8_t range) {
+void LIS3MDL::setRange(uint8_t range) {
     switch (range) {
         case RANGE_4_GAUSS: {
             _ctrlReg2 = ADR_FS_4;
@@ -52,7 +50,7 @@ void LIS3MDL_TWI::setRange(uint8_t range) {
     writeCtrlReg2();
 }
 
-void LIS3MDL_TWI::sleep(bool enable) {
+void LIS3MDL::sleep(bool enable) {
     if (enable)
         _ctrlReg3 |= (3 << 0);
     else
@@ -61,46 +59,46 @@ void LIS3MDL_TWI::sleep(bool enable) {
     writeCtrlReg3();
 }
 
-float LIS3MDL_TWI::readGaussX() {
+float LIS3MDL::readGaussX() {
     return readX() / _mult;
 }
 
-float LIS3MDL_TWI::readGaussY() {
+float LIS3MDL::readGaussY() {
     return readY() / _mult;
 }
 
-float LIS3MDL_TWI::readGaussZ() {
+float LIS3MDL::readGaussZ() {
     return readZ() / _mult;
 }
 
-float LIS3MDL_TWI::readCalibrateX() {
+float LIS3MDL::readCalibrateX() {
     calibrate();
     return _xCalibrate;
 }
 
-float LIS3MDL_TWI::readCalibrateY() {
+float LIS3MDL::readCalibrateY() {
     calibrate();
     return _yCalibrate;
 }
 
-float LIS3MDL_TWI::readCalibrateZ() {
+float LIS3MDL::readCalibrateZ() {
     calibrate();
     return _zCalibrate;
 }
 
-float LIS3MDL_TWI::readCalibrateGaussX() {
+float LIS3MDL::readCalibrateGaussX() {
     return readCalibrateX()/_mult;
 }
 
-float LIS3MDL_TWI::readCalibrateGaussY() {
+float LIS3MDL::readCalibrateGaussY() {
     return readCalibrateY()/_mult;
 }
 
-float LIS3MDL_TWI::readCalibrateGaussZ() {
+float LIS3MDL::readCalibrateGaussZ() {
     return readCalibrateZ()/_mult;
 }
 
-void LIS3MDL_TWI::calibrate() {
+void LIS3MDL::calibrate() {
     float result[3] = {0, 0, 0};
     float uncalibratedValues[3];
     uncalibratedValues[0] = readX() - _bias[0];
@@ -118,19 +116,19 @@ void LIS3MDL_TWI::calibrate() {
     _zCalibrate = result[2];
 }
 
-void LIS3MDL_TWI::calibrateMatrix(const double calibrationMatrix[3][3], const double bias[3]) {
+void LIS3MDL::calibrateMatrix(const double calibrationMatrix[3][3], const double bias[3]) {
     memcpy (_bias, bias, 3 * sizeof (double));
     memcpy (_calibrationMatrix, calibrationMatrix, 3 * 3 * sizeof (double));
 }
 
-void LIS3MDL_TWI::readCalibrateGaussXYZ(float *x, float *y, float *z) {
+void LIS3MDL::readCalibrateGaussXYZ(float *x, float *y, float *z) {
     calibrate();
     *x = _xCalibrate / _mult;
     *y = _yCalibrate / _mult;
     *z = _zCalibrate / _mult;
 }
 
-float LIS3MDL_TWI::readAzimut() {
+float LIS3MDL::readAzimut() {
     calibrate();
     float heading = atan2(_yCalibrate, _xCalibrate);
 

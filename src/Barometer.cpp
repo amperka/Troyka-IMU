@@ -1,5 +1,4 @@
-#include <LPS331.h>
-#include <Wire.h>
+#include <Barometer.h>
 #include <GOST4401_81.h>
 
 // Constructors //////////////////////////////////////////////////////

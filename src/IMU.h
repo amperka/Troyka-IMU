@@ -1,5 +1,8 @@
-#ifndef HW_H
-#define HW_H
+#ifndef __IMU_H__
+#define __IMU_H__
+
+#include <Arduino.h>
+#include <Wire.h>
 
 #if defined(__AVR__) || defined(__SAMD21G18A__) || defined(ESP8266)
 #define WIRE_IMU Wire
@@ -8,9 +11,7 @@
 #define WIRE_IMU Wire1
 #endif
 
-#include <stdint.h>
-#include <Arduino.h>
-class AxisHw
+class IMU
 {
 private:
     uint8_t _addr;
@@ -18,7 +19,7 @@ private:
     static inline void waitForData();
 
 public:
-    AxisHw (uint8_t addr) : _addr (addr) {}
+    IMU(uint8_t addr) : _addr (addr) {}
 
     uint8_t readByte(uint8_t reg);
     int16_t readX();
@@ -43,4 +44,4 @@ protected:
 
     int16_t readAxis(uint8_t reg);
 };
-#endif //HW_H
+#endif // __IMU_H__

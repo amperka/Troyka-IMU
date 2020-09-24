@@ -1,5 +1,4 @@
-#include <Wire.h>
-#include "lis331dlh.h"
+#include "Accelerometer.h"
 
 #define ADR_FS_2        0x00
 #define ADR_FS_4        0x10
@@ -7,10 +6,10 @@
 
 #define G               9.8
 
-LIS331DLH_TWI::LIS331DLH_TWI(uint8_t addr) : AxisHw(addr) {
+LIS331DLH::LIS331DLH(uint8_t addr) : IMU(addr) {
 }
 
-void LIS331DLH_TWI::begin() {
+void LIS331DLH::begin() {
     // подключаемся к шине I²C
     WIRE_IMU.begin();
     // включаем координаты x, y, z
@@ -24,7 +23,7 @@ void LIS331DLH_TWI::begin() {
     writeCtrlReg1();
 }
 
-void LIS331DLH_TWI::setRange(uint8_t range) {
+void LIS331DLH::setRange(uint8_t range) {
     switch (range) {
         case RANGE_2G: {
             _ctrlReg4 = ADR_FS_2;
@@ -49,7 +48,7 @@ void LIS331DLH_TWI::setRange(uint8_t range) {
     writeCtrlReg4();
 }
 
-void LIS331DLH_TWI::sleep(bool enable) {
+void LIS331DLH::sleep(bool enable) {
     if (enable)
         _ctrlReg1 &= ~(1 << 5);
     else
@@ -58,31 +57,31 @@ void LIS331DLH_TWI::sleep(bool enable) {
     writeCtrlReg1();
 }
 
-float LIS331DLH_TWI::readGX() {
+float LIS331DLH::readGX() {
     return readX()*_mult;
 }
 
-float LIS331DLH_TWI::readGY() {
+float LIS331DLH::readGY() {
     return readY()*_mult;
 }
 
-float LIS331DLH_TWI::readGZ() {
+float LIS331DLH::readGZ() {
     return readZ()*_mult;
 }
 
-float LIS331DLH_TWI::readAX() {
+float LIS331DLH::readAX() {
     return readGX() * G;
 }
 
-float LIS331DLH_TWI::readAY() {
+float LIS331DLH::readAY() {
     return readGY() * G;
 }
 
-float LIS331DLH_TWI::readAZ() {
+float LIS331DLH::readAZ() {
     return readGZ() * G;
 }
 
-void LIS331DLH_TWI::readGXYZ(float *gx, float *gy, float *gz) {
+void LIS331DLH::readGXYZ(float *gx, float *gy, float *gz) {
     int16_t x, y, z;
     readXYZ(&x, &y, &z);
     *gx = x * _mult;
@@ -90,7 +89,7 @@ void LIS331DLH_TWI::readGXYZ(float *gx, float *gy, float *gz) {
     *gz = z * _mult;
 }
 
-void LIS331DLH_TWI::readAXYZ(float *ax, float *ay, float *az) {
+void LIS331DLH::readAXYZ(float *ax, float *ay, float *az) {
     readGXYZ(ax, ay, az);
     (*ax) *= G;
     (*ay) *= G;

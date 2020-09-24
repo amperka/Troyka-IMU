@@ -1,7 +1,7 @@
-#ifndef LIS3MDL_H
-#define LIS3MDL_H
+#ifndef __COMPASS_H__
+#define __COMPASS_H__
 
-#include "stmhw.h"
+#include "IMU.h"
 
 #define LIS3MDL_TWI_ADDRESS     0b0011100
 #define LIS3MDL_TWI_ADDRESS_V2  0b0011110
@@ -11,10 +11,10 @@
 #define RANGE_12_GAUSS          2
 #define RANGE_16_GAUSS          3
 
-class LIS3MDL_TWI : public AxisHw
+class LIS3MDL : public IMU
 {
 public:
-    LIS3MDL_TWI(uint8_t addr = LIS3MDL_TWI_ADDRESS);
+    LIS3MDL(uint8_t addr = LIS3MDL_TWI_ADDRESS);
     void begin();
     void sleep(bool enable);
     void setRange(uint8_t range);
@@ -40,4 +40,4 @@ private:
     double _bias[3];
 };
 
-#endif
+#endif // __COMPASS_H__
