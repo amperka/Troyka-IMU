@@ -44,9 +44,9 @@ void loop()
   unsigned long startMillis = millis();
  
   // считываем данные с акселерометра в единицах G
-  accel.readGXYZ(&ax, &ay, &az);
+  accel.readGXYZ(ax, ay, az);
   // считываем данные с акселерометра в радианах в секунду
-  gyro.readRadPerSecXYZ(&gx, &gy, &gz);
+  gyro.readRadPerSecXYZ(gx, gy, gz);
   // устанавливаем коэффициенты фильтра
   filter.setKoeff(fps, BETA);
   // обновляем входные данные в фильтр

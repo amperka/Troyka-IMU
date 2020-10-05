@@ -65,11 +65,11 @@ void loop()
   // запоминаем текущее время
   unsigned long startMillis = millis();
   // считываем данные с акселерометра в единицах G
-  accel.readGXYZ(&ax, &ay, &az);
+  accel.readGXYZ(ax, ay, az);
   // считываем данные с гироскопа в радианах в секунду
-  gyro.readRadPerSecXYZ(&gx, &gy, &gz);
+  gyro.readRadPerSecXYZ(gx, gy, gz);
   // считываем данные с компаса в Гауссах
-  compass.readCalibrateGaussXYZ(&mx, &my, &mz);
+  compass.readCalibrateGaussXYZ(mx, my, mz);
   // устанавливаем коэффициенты фильтра
   filter.setKoeff(fps, BETA);
   // обновляем входные данные в фильтр

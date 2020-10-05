@@ -1,15 +1,5 @@
 #include "Compass.h"
 
-#define ADR_FS_4 0x00
-#define ADR_FS_8 0x20
-#define ADR_FS_12 0x40
-#define ADR_FS_16 0x60
-
-#define SENS_FS_4 6842
-#define SENS_FS_8 3421
-#define SENS_FS_12 2281
-#define SENS_FS_16 1711
-
 LIS3MDL::LIS3MDL(uint8_t addr)
     : BaseIMU(addr) { }
 
@@ -18,7 +8,7 @@ void LIS3MDL::begin(TwoWire& wire) {
     _wire->begin();
     // устанавливаем чувствительность
     setRange(RANGE_4_GAUSS);
-    writeCtrlReg3();
+    _writeByte(CTRL_REG3, _ctrlReg3);
 }
 
 void LIS3MDL::setRange(uint8_t range) {
@@ -47,7 +37,7 @@ void LIS3MDL::setRange(uint8_t range) {
         _mult = SENS_FS_4;
     } break;
     }
-    writeCtrlReg2();
+    _writeByte(CTRL_REG2, _ctrlReg2);
 }
 
 void LIS3MDL::sleep(bool enable) {
@@ -56,7 +46,7 @@ void LIS3MDL::sleep(bool enable) {
     else
         _ctrlReg3 &= ~(3 << 0);
 
-    writeCtrlReg3();
+    _writeByte(CTRL_REG3, _ctrlReg3);
 }
 
 float LIS3MDL::readGaussX() { return readX() / _mult; }
@@ -110,11 +100,11 @@ void LIS3MDL::calibrateMatrix(const double calibrationMatrix[3][3],
     memcpy(_calibrationMatrix, calibrationMatrix, 3 * 3 * sizeof(double));
 }
 
-void LIS3MDL::readCalibrateGaussXYZ(float* x, float* y, float* z) {
+void LIS3MDL::readCalibrateGaussXYZ(float& x, float& y, float& z) {
     calibrate();
-    *x = _xCalibrate / _mult;
-    *y = _yCalibrate / _mult;
-    *z = _zCalibrate / _mult;
+    x = _xCalibrate / _mult;
+    y = _yCalibrate / _mult;
+    z = _zCalibrate / _mult;
 }
 
 float LIS3MDL::readAzimut() {

@@ -11,6 +11,16 @@
 #define RANGE_12_GAUSS 2
 #define RANGE_16_GAUSS 3
 
+#define ADR_FS_4 0x00
+#define ADR_FS_8 0x20
+#define ADR_FS_12 0x40
+#define ADR_FS_16 0x60
+
+#define SENS_FS_4 6842
+#define SENS_FS_8 3421
+#define SENS_FS_12 2281
+#define SENS_FS_16 1711
+
 class LIS3MDL : public BaseIMU {
 public:
     LIS3MDL(uint8_t addr = LIS3MDL_TWI_ADDRESS);
@@ -30,7 +40,7 @@ public:
     float readCalibrateGaussY();
     float readCalibrateGaussZ();
     float readAzimut();
-    void readCalibrateGaussXYZ(float* x, float* y, float* z);
+    void readCalibrateGaussXYZ(float& x, float& y, float& z);
 
 private:
     float _xCalibrate;

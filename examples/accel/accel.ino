@@ -38,7 +38,7 @@ void loop()
   /*
   // вывод направления и величины ускорения в м/с² по X, Y и Z
   float x, y, z;
-  accel.readAXYZ(&x, &y, &z);
+  accel.readAXYZ(x, y, z);
   Serial.print(x);
   Serial.print("\t\t");
   Serial.print(y);

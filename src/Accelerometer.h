@@ -10,6 +10,12 @@
 #define RANGE_4G 4
 #define RANGE_8G 8
 
+#define ADR_FS_2 0x00
+#define ADR_FS_4 0x10
+#define ADR_FS_8 0x30
+
+#define G 9.8
+
 class LIS331DLH : public BaseIMU {
 public:
     LIS331DLH(uint8_t addr = LIS331DLH_ADDRESS);
@@ -22,8 +28,8 @@ public:
     float readAX();
     float readAY();
     float readAZ();
-    void readGXYZ(float* ax, float* ay, float* az);
-    void readAXYZ(float* gx, float* gy, float* gz);
+    void readGXYZ(float& ax, float& ay, float& az);
+    void readAXYZ(float& gx, float& gy, float& gz);
 };
 
 #endif // __ACCELEROMETER_H__
