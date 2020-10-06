@@ -20,18 +20,18 @@
 
 class L3G4200D : public BaseIMU {
 public:
-    L3G4200D(uint8_t addr = L3G4200D_ADDRESS);
+    L3G4200D(uint8_t slaveAddress = L3G4200D_ADDRESS);
     void begin(TwoWire &wire = Wire);
-    void sleep(bool enable);
+    void sleep(bool state);
     void setRange(uint8_t range);
-    float readDegPerSecX();
-    float readDegPerSecY();
-    float readDegPerSecZ();
-    float readRadPerSecX();
-    float readRadPerSecY();
-    float readRadPerSecZ();
-    void readDegPerSecXYZ(float& gx, float& gy, float& gz);
-    void readRadPerSecXYZ(float& gx, float& gy, float& gz);
+    float readRotationDegX();
+    float readRotationDegY();
+    float readRotationDegZ();
+    float readRotationRadX();
+    float readRotationRadY();
+    float readRotationRadZ();
+    void readRotationDegXYZ(float& gx, float& gy, float& gz);
+    void readRotationRadXYZ(float& gx, float& gy, float& gz);
 };
 
 #endif // __GYROSCOPE_H__

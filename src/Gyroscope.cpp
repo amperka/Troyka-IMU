@@ -1,27 +1,27 @@
 #include "Gyroscope.h"
 
-L3G4200D::L3G4200D(uint8_t addr)
-    : BaseIMU(addr) { }
+L3G4200D::L3G4200D(uint8_t slaveAddress)
+    : BaseIMU(slaveAddress) { }
 
 void L3G4200D::setRange(uint8_t range) {
     switch (range) {
     case RANGE_250DPS: {
         _ctrlReg4 |= ADR_FS_250;
-        _mult = SENS_FS_250;
+        _scale = SENS_FS_250;
         break;
     }
     case RANGE_500DPS: {
         _ctrlReg4 |= ADR_FS_500;
-        _mult = SENS_FS_500;
+        _scale = SENS_FS_500;
         break;
     }
     case RANGE_2000DPS: {
         _ctrlReg4 |= ADR_FS_2000;
-        _mult = SENS_FS_2000;
+        _scale = SENS_FS_2000;
         break;
     }
     default: {
-        _mult = SENS_FS_250;
+        _scale = SENS_FS_250;
     } break;
     }
     _writeByte(CTRL_REG4, _ctrlReg4);
@@ -35,8 +35,8 @@ void L3G4200D::begin(TwoWire& wire) {
     setRange(RANGE_250DPS);
 }
 
-void L3G4200D::sleep(bool enable) {
-    if (enable) {
+void L3G4200D::sleep(bool state) {
+    if (state) {
         _ctrlReg1 &= ~(1 << 3);
     } else {
         _ctrlReg1 |= (1 << 3);
@@ -44,28 +44,28 @@ void L3G4200D::sleep(bool enable) {
     _writeByte(CTRL_REG1, _ctrlReg1);
 }
 
-float L3G4200D::readDegPerSecX() { return readX() * _mult; }
+float L3G4200D::readRotationDegX() { return readX() * _scale; }
 
-float L3G4200D::readDegPerSecY() { return readY() * _mult; }
+float L3G4200D::readRotationDegY() { return readY() * _scale; }
 
-float L3G4200D::readDegPerSecZ() { return readZ() * _mult; }
+float L3G4200D::readRotationDegZ() { return readZ() * _scale; }
 
-float L3G4200D::readRadPerSecX() { return readDegPerSecX() * DEG_TO_RAD; }
+float L3G4200D::readRotationRadX() { return readRotationDegX() * DEG_TO_RAD; }
 
-float L3G4200D::readRadPerSecY() { return readDegPerSecY() * DEG_TO_RAD; }
+float L3G4200D::readRotationRadY() { return readRotationDegY() * DEG_TO_RAD; }
 
-float L3G4200D::readRadPerSecZ() { return readDegPerSecZ() * DEG_TO_RAD; }
+float L3G4200D::readRotationRadZ() { return readRotationDegZ() * DEG_TO_RAD; }
 
-void L3G4200D::readDegPerSecXYZ(float& gx, float& gy, float& gz) {
+void L3G4200D::readRotationDegXYZ(float& gx, float& gy, float& gz) {
     int16_t x, y, z;
     readXYZ(x, y, z);
-    gx = x * _mult;
-    gy = y * _mult;
-    gz = z * _mult;
+    gx = x * _scale;
+    gy = y * _scale;
+    gz = z * _scale;
 }
 
-void L3G4200D::readRadPerSecXYZ(float& gx, float& gy, float& gz) {
-    readDegPerSecXYZ(gx, gy, gz);
+void L3G4200D::readRotationRadXYZ(float& gx, float& gy, float& gz) {
+    readRotationDegXYZ(gx, gy, gz);
     gx *= DEG_TO_RAD;
     gy *= DEG_TO_RAD;
     gz *= DEG_TO_RAD;

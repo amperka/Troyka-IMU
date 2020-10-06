@@ -9,7 +9,7 @@ Barometer barometer(BARO_ADDRESS_V1);
 void setup()
 {
   // открываем последовательный порт
-  Serial.begin(115200);
+  Serial.begin(9600);
   // выводим сообщение о начале инициализации
   Serial.println("Begin init...");
   // инициализация барометра

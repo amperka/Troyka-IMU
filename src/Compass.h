@@ -3,8 +3,8 @@
 
 #include "BaseIMU.h"
 
-#define LIS3MDL_TWI_ADDRESS 0b0011100
-#define LIS3MDL_TWI_ADDRESS_V2 0b0011110
+#define LIS3MDL_ADDRESS 0b0011100
+#define LIS3MDL_ADDRESS_V2 0b0011110
 
 #define RANGE_4_GAUSS 0
 #define RANGE_8_GAUSS 1
@@ -23,31 +23,24 @@
 
 class LIS3MDL : public BaseIMU {
 public:
-    LIS3MDL(uint8_t addr = LIS3MDL_TWI_ADDRESS);
-    void begin(TwoWire &wire = Wire);
-    void sleep(bool enable);
+    LIS3MDL(uint8_t slaveAddress = LIS3MDL_ADDRESS);
+    void begin(TwoWire& wire = Wire);
+    void sleep(bool state);
     void setRange(uint8_t range);
-    void calibrateMatrix(const double calibrationMatrix[3][3],
-                         const double bias[3]);
-    void calibrate();
-    float readGaussX();
-    float readGaussY();
-    float readGaussZ();
-    float readCalibrateX();
-    float readCalibrateY();
-    float readCalibrateZ();
-    float readCalibrateGaussX();
-    float readCalibrateGaussY();
-    float readCalibrateGaussZ();
+    float readMagneticGaussX();
+    float readMagneticGaussY();
+    float readMagneticGaussZ();
+    void readMagneticGaussXYZ(float& x, float& y, float& z);
+    void readCalibrateMagneticGaussXYZ(float& x, float& y, float& z);
+    void setCalibrateMatrix(const float calibrationMatrix[3][3],
+                            const float bias[3]);
     float readAzimut();
-    void readCalibrateGaussXYZ(float& x, float& y, float& z);
+
 
 private:
-    float _xCalibrate;
-    float _yCalibrate;
-    float _zCalibrate;
-    double _calibrationMatrix[3][3];
-    double _bias[3];
+    void _calibrate(float& x, float& y, float& z);
+    float _calibrationMatrix[3][3];
+    float _calibrationBias[3];
 };
 
 #endif // __COMPASS_H__

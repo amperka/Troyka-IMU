@@ -18,18 +18,18 @@
 
 class LIS331DLH : public BaseIMU {
 public:
-    LIS331DLH(uint8_t addr = LIS331DLH_ADDRESS);
+    LIS331DLH(uint8_t slaveAddress = LIS331DLH_ADDRESS);
     void begin(TwoWire &wire = Wire);
-    void sleep(bool enable);
+    void sleep(bool state);
     void setRange(uint8_t range);
-    float readGX();
-    float readGY();
-    float readGZ();
-    float readAX();
-    float readAY();
-    float readAZ();
-    void readGXYZ(float& ax, float& ay, float& az);
-    void readAXYZ(float& gx, float& gy, float& gz);
+    float readAccelerationGX();
+    float readAccelerationGY();
+    float readAccelerationGZ();
+    float readAccelerationAX();
+    float readAccelerationAY();
+    float readAccelerationAZ();
+    void readAccelerationGXYZ(float& ax, float& ay, float& az);
+    void readAccelerationAXYZ(float& ax, float& ay, float& az);
 };
 
 #endif // __ACCELEROMETER_H__

@@ -1,6 +1,6 @@
 // библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
- 
+
 // создаём объект для работы с гироскопом
 Gyroscope gyro(GYRO_ADDRESS_V1);
 // создаём объект для работы с акселерометром
@@ -18,68 +18,60 @@ Barometer barometer(BARO_ADDRESS_V1);
 
 // калибровочные значения компаса
 // полученные в калибровочной матрице из примера «compassCalibrateMatrix»
-const double compassCalibrationBias[3] = {
-  524.21,
-  3352.214,
-  -1402.236
-};
- 
-const double compassCalibrationMatrix[3][3] = {
-  {1.757, 0.04, -0.028},
-  {0.008, 1.767, -0.016},
-  {-0.018, 0.077, 1.782}
-};
- 
-void setup()
-{
-  // открываем последовательный порт
-  Serial.begin(115200);
-  // выводим сообщение о начале инициализации
-  Serial.println("Begin init...");
-  // инициализация гироскопа
-  gyro.begin();
-  // инициализация акселерометра
-  accel.begin();
-  // инициализация компаса
-  compass.begin();
-  // инициализация барометра
-  barometer.begin();
-  // калибровка компаса
-  compass.calibrateMatrix(compassCalibrationMatrix, compassCalibrationBias);
-  // выводим сообщение об удачной инициализации
-  Serial.println("Initialization completed");
-  Serial.println("Gyroscope\t\t\tAccelerometer\t\t\tCompass\t\tBarometer");
+const float compassCalibrationBias[3] = { 2269.685, -3415.288, 4698.337 };
+
+const float compassCalibrationMatrix[3][3] = { { 2.464, 0.133, 0.009 },
+                                               { 0.09, 3.081, 0.016 },
+                                               { -0.003, -0.225, 2.922 } };
+
+void setup() {
+    // открываем последовательный порт
+    Serial.begin(9600);
+    // выводим сообщение о начале инициализации
+    Serial.println("Begin init...");
+    // инициализация гироскопа
+    gyro.begin();
+    // инициализация акселерометра
+    accel.begin();
+    // инициализация компаса
+    compass.begin();
+    // инициализация барометра
+    barometer.begin();
+    // калибровка компаса
+    compass.setCalibrateMatrix(compassCalibrationMatrix, compassCalibrationBias);
+    // выводим сообщение об удачной инициализации
+    Serial.println("Initialization completed");
+    Serial.println("Gyroscope\t\t\tAccelerometer\t\t\tCompass\t\tBarometer");
 }
- 
-void loop()
-{
-  // вывод угловой скорости в градусах в секунду относительно оси X
-  Serial.print(gyro.readDegPerSecX());
-  Serial.print("\t");
-  // вывод угловой скорости в градусах в секунду относительно оси Y
-  Serial.print(gyro.readDegPerSecY());
-  Serial.print("\t");
-  // вывод угловой скорости в градусах в секунду относительно оси Z
-  Serial.print(gyro.readDegPerSecZ());
-  Serial.print("\t\t");
-  // вывод направления и величины ускорения в м/с² по оси X
-  Serial.print(accel.readAX());
-  Serial.print("\t");
-  // вывод направления и величины ускорения в м/с² по оси Y
-  Serial.print(accel.readAY());
-  Serial.print("\t");
-  // вывод направления и величины ускорения в м/с² по оси Z
-  Serial.print(accel.readAZ());
-  Serial.print("\t\t");
-  // выводим азимут относительно оси Z
-  Serial.print(compass.readAzimut());
-  Serial.print(" Degrees\t");
-  // вывод значения абсолютного давления
-  Serial.print(barometer.readPressureMillibars());
-  Serial.print("\t");
-  // вывод значения температуры окружающей среды
-  Serial.print(barometer.readTemperatureC());
-  Serial.print("\t");
-  Serial.println("");
-  delay(100);
+
+void loop() {
+    // вывод угловой скорости в градусах в секунду относительно оси X
+    Serial.print(gyro.readRotationDegX());
+    Serial.print("\t");
+    // вывод угловой скорости в градусах в секунду относительно оси Y
+    Serial.print(gyro.readRotationDegY());
+    Serial.print("\t");
+    // вывод угловой скорости в градусах в секунду относительно оси Z
+    Serial.print(gyro.readRotationDegZ());
+    Serial.print("\t\t");
+    // вывод направления и величины ускорения в м/с² по оси X
+    Serial.print(accel.readAccelerationAX());
+    Serial.print("\t");
+    // вывод направления и величины ускорения в м/с² по оси Y
+    Serial.print(accel.readAccelerationAY());
+    Serial.print("\t");
+    // вывод направления и величины ускорения в м/с² по оси Z
+    Serial.print(accel.readAccelerationAZ());
+    Serial.print("\t\t");
+    // выводим азимут относительно оси Z
+    Serial.print(compass.readAzimut());
+    Serial.print(" Degrees\t");
+    // вывод значения абсолютного давления
+    Serial.print(barometer.readPressureMillibars());
+    Serial.print("\t");
+    // вывод значения температуры окружающей среды
+    Serial.print(barometer.readTemperatureC());
+    Serial.print("\t");
+    Serial.println("");
+    delay(100);
 }
