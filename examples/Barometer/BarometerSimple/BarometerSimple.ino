@@ -5,32 +5,36 @@
 Barometer barometer;
 
 void setup() {
-    // открываем последовательный порт
+    // Окрываем Serial-порт
     Serial.begin(9600);
-    // выводим сообщение о начале инициализации
-    Serial.println("Begin init...");
-    // инициализация барометра
+    // Выводим сообщение о начале инициализации
+    Serial.println("Barometer begin");
+    // Инициализируем барометр
     barometer.begin();
-    // выводим сообщение об удачной инициализации
+    // Выводим сообщение об удачной инициализации
     Serial.println("Initialization completed");
 }
 
 void loop() {
-    // создаём переменную и присваиваем ей значения абсолютного давления
-    float pressure = barometer.readPressureMillibars();
-    // создаём переменную и присваиваем ей значения высоты над уровнем море
-    float altitude = barometer.pressureToAltitudeMeters(pressure);
-    // создаём переменную и присваиваем ей температуру окружающей среды
+    // Создаём переменную для значения атмосферного давления в Паскалях
+    float pressurePascals = barometer.readPressurePascals();
+    // Создаём переменную для значения атмосферного давления в мм рт.ст.
+    float pressureMillimetersHg = barometer.readPressureMillimetersHg();
+    // Создаём переменную для значения высоты над уровнем море
+    float altitude = barometer.readAltitude();
+    // Создаём переменную для значения температуры окружающей среды
     float temperature = barometer.readTemperatureC();
 
-    // Вывод данных в Serial порт
-    Serial.print("p: ");
-    Serial.print(pressure);
-    Serial.print(" mbar \t");
-    Serial.print("h: ");
+    // Вывод данных в Serial-порт
+    Serial.print("Pressure: ");
+    Serial.print(pressurePascals);
+    Serial.print(" Pa\t");
+    Serial.print(pressureMillimetersHg);
+    Serial.print(" mmHg\t");
+    Serial.print("Height: ");
     Serial.print(altitude);
     Serial.print(" m \t");
-    Serial.print("t: ");
+    Serial.print("Temperature: ");
     Serial.print(temperature);
     Serial.println(" C");
     delay(100);
