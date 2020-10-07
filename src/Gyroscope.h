@@ -3,9 +3,6 @@
 
 #include "BaseIMU.h"
 
-#define L3G4200D_ADDRESS 0b01101000
-#define L3G4200D_ADDRESS_V2 0b01101001
-
 #define RANGE_250DPS 0
 #define RANGE_500DPS 1
 #define RANGE_2000DPS 2
@@ -20,7 +17,7 @@
 
 class L3G4200D : public BaseIMU {
 public:
-    L3G4200D(uint8_t slaveAddress = L3G4200D_ADDRESS);
+    L3G4200D(uint8_t slaveAddress);
     void begin(TwoWire &wire = Wire);
     void sleep(bool state);
     void setRange(uint8_t range);

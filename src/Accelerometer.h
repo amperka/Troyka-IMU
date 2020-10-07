@@ -3,9 +3,6 @@
 
 #include "BaseIMU.h"
 
-#define LIS331DLH_ADDRESS 0b0011000
-#define LIS331DLH_ADDRESS_V2 0b0011001
-
 #define RANGE_2G 2
 #define RANGE_4G 4
 #define RANGE_8G 8
@@ -18,7 +15,7 @@
 
 class LIS331DLH : public BaseIMU {
 public:
-    LIS331DLH(uint8_t slaveAddress = LIS331DLH_ADDRESS);
+    LIS331DLH(uint8_t slaveAddress);
     void begin(TwoWire &wire = Wire);
     void sleep(bool state);
     void setRange(uint8_t range);
