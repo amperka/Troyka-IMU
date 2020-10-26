@@ -3,6 +3,10 @@
 
 #include "BaseIMU.h"
 
+// I²C-address device
+constexpr uint8_t LIS3MDL_SLAVE_ADDRESS = 0x1C;
+constexpr uint8_t LIS3MDL_SLAVE_ADDRESS_ALT = 0x1E;
+
 // Registers addrress
 constexpr uint8_t LIS3MDL_CTRL_REG2_FS0 = 0x20;
 constexpr uint8_t LIS3MDL_CTRL_REG2_FS1 = 0x40;
@@ -26,7 +30,7 @@ enum class CompassRange {
 
 class Compass : public BaseIMU {
 public:
-    Compass(uint8_t slaveAddress = 0x1C);
+    Compass(uint8_t slaveAddress = LIS3MDL_SLAVE_ADDRESS);
     void begin(TwoWire& wire = Wire);
     void sleep(bool state);
     void setRange(CompassRange range);

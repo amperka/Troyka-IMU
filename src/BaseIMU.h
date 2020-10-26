@@ -12,7 +12,6 @@ constexpr uint8_t BASE_IMU_CTRL_REG3 = 0x22;
 constexpr uint8_t BASE_IMU_CTRL_REG4 = 0x23;
 constexpr uint8_t BASE_IMU_CTRL_REG5 = 0x24;
 
-// Registers value bits
 constexpr uint8_t BASE_IMU_OUT_X_L = 0x28;
 constexpr uint8_t BASE_IMU_OUT_X_H = 0x29;
 constexpr uint8_t BASE_IMU_OUT_Y_L = 0x2A;

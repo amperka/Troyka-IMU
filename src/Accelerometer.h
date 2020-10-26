@@ -3,6 +3,10 @@
 
 #include "BaseIMU.h"
 
+// I²C-address device
+constexpr uint8_t LIS331DLH_SLAVE_ADDRESS = 0x18;
+constexpr uint8_t LIS331DLH_SLAVE_ADDRESS_ALT = 0x19;
+
 // Registers addrress
 constexpr uint8_t LIS331DLH_CTRL_REG4_FS0 = 0x10;
 constexpr uint8_t LIS331DLH_CTRL_REG4_FS1 = 0x20;
@@ -25,7 +29,7 @@ enum class AccelerometerRange { RANGE_2G = 1, RANGE_4G = 2, RANGE_8G = 3 };
 
 class Accelerometer : public BaseIMU {
 public:
-    Accelerometer(uint8_t slaveAddress = 0x18);
+    Accelerometer(uint8_t slaveAddress = LIS331DLH_SLAVE_ADDRESS);
     void begin(TwoWire& wire = Wire);
     void sleep(bool state);
     void setRange(AccelerometerRange range);

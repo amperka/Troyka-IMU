@@ -3,6 +3,10 @@
 
 #include "BaseIMU.h"
 
+// I²C-address device
+constexpr uint8_t L3G4200D_SLAVE_ADDRESS = 0x68;
+constexpr uint8_t L3G4200D_SLAVE_ADDRESS_ALT = 0x69;
+
 // Registers address
 constexpr uint8_t L3G4200D_CTRL_REG4_FS0 = 0x10;
 constexpr uint8_t L3G4200D_CTRL_REG4_FS1 = 0x20;
@@ -26,7 +30,7 @@ enum class GyroscopeRange {
 
 class Gyroscope : public BaseIMU {
 public:
-    Gyroscope(uint8_t slaveAddress = 0x68);
+    Gyroscope(uint8_t slaveAddress = L3G4200D_SLAVE_ADDRESS);
     void begin(TwoWire& wire = Wire);
     void sleep(bool state);
     void setRange(GyroscopeRange range);
