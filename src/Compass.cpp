@@ -1,16 +1,16 @@
 #include "Compass.h"
 
-LIS3MDL::LIS3MDL(uint8_t slaveAddress)
+Compass::Compass(uint8_t slaveAddress)
     : BaseIMU(slaveAddress) { }
 
-void LIS3MDL::begin(TwoWire& wire) {
+void Compass::begin(TwoWire& wire) {
     _wire = &wire;
     _wire->begin();
     _writeByte(CTRL_REG3, _ctrlReg3);
     setRange(CompassRange::RANGE_16GAUSS);
 }
 
-void LIS3MDL::setRange(CompassRange range) {
+void Compass::setRange(CompassRange range) {
     switch (range) {
     case CompassRange::RANGE_4GAUSS: {
         _ctrlReg2 = 0;
@@ -39,7 +39,7 @@ void LIS3MDL::setRange(CompassRange range) {
     _writeByte(CTRL_REG2, _ctrlReg2);
 }
 
-void LIS3MDL::sleep(bool state) {
+void Compass::sleep(bool state) {
     if (state)
         _ctrlReg3 |= (3 << 0);
     else
@@ -48,13 +48,13 @@ void LIS3MDL::sleep(bool state) {
     _writeByte(CTRL_REG3, _ctrlReg3);
 }
 
-float LIS3MDL::readMagneticGaussX() { return readX() / _scalingFactor; }
+float Compass::readMagneticGaussX() { return readX() / _scalingFactor; }
 
-float LIS3MDL::readMagneticGaussY() { return readY() / _scalingFactor; }
+float Compass::readMagneticGaussY() { return readY() / _scalingFactor; }
 
-float LIS3MDL::readMagneticGaussZ() { return readZ() / _scalingFactor; }
+float Compass::readMagneticGaussZ() { return readZ() / _scalingFactor; }
 
-void LIS3MDL::readMagneticGaussXYZ(float& mx, float& my, float& mz) {
+void Compass::readMagneticGaussXYZ(float& mx, float& my, float& mz) {
     int16_t x, y, z;
     readXYZ(x, y, z);
     mx = x / _scalingFactor;
@@ -62,7 +62,7 @@ void LIS3MDL::readMagneticGaussXYZ(float& mx, float& my, float& mz) {
     mz = z / _scalingFactor;
 }
 
-void LIS3MDL::readCalibrateMagneticGaussXYZ(float& mx, float& my, float& mz) {
+void Compass::readCalibrateMagneticGaussXYZ(float& mx, float& my, float& mz) {
     int16_t x, y, z;
     readXYZ(x, y, z);
     mx = x, my = y, mz = z;
@@ -72,13 +72,13 @@ void LIS3MDL::readCalibrateMagneticGaussXYZ(float& mx, float& my, float& mz) {
     mz = z / _scalingFactor;
 }
 
-void LIS3MDL::setCalibrateMatrix(const float calibrationMatrix[3][3],
+void Compass::setCalibrateMatrix(const float calibrationMatrix[3][3],
                                  const float calibrationBias[3]) {
     memcpy(_calibrationBias, calibrationBias, 3 * sizeof(float));
     memcpy(_calibrationMatrix, calibrationMatrix, 3 * 3 * sizeof(float));
 }
 
-void LIS3MDL::_calibrate(float& x, float& y, float& z) {
+void Compass::_calibrate(float& x, float& y, float& z) {
     float calibrationValues[3] = { 0, 0, 0 };
     float nonCalibrationValues[3] = { 0, 0, 0 };
     nonCalibrationValues[0] = x - _calibrationBias[0];
@@ -97,7 +97,7 @@ void LIS3MDL::_calibrate(float& x, float& y, float& z) {
     z = calibrationValues[2];
 }
 
-float LIS3MDL::readAzimut() {
+float Compass::readAzimut() {
     int16_t x, y, z;
     readXYZ(x, y, z);
     float mx = x, my = y, mz = z;

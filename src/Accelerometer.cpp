@@ -1,9 +1,9 @@
 #include "Accelerometer.h"
 
-LIS331DLH::LIS331DLH(uint8_t slaveAddress)
+Accelerometer::Accelerometer(uint8_t slaveAddress)
     : BaseIMU(slaveAddress) { }
 
-void LIS331DLH::begin(TwoWire& wire) {
+void Accelerometer::begin(TwoWire& wire) {
     _wire = &wire;
     _wire->begin();
     _ctrlReg1 |= (1 << 0);
@@ -14,7 +14,7 @@ void LIS331DLH::begin(TwoWire& wire) {
     setRange(AccelerometerRange::RANGE_2G);
 }
 
-void LIS331DLH::setRange(AccelerometerRange range) {
+void Accelerometer::setRange(AccelerometerRange range) {
     switch (range) {
     case AccelerometerRange::RANGE_2G: {
         _ctrlReg4 = 0;
@@ -38,7 +38,7 @@ void LIS331DLH::setRange(AccelerometerRange range) {
     _writeByte(CTRL_REG4, _ctrlReg4);
 }
 
-void LIS331DLH::sleep(bool state) {
+void Accelerometer::sleep(bool state) {
     if (state)
         _ctrlReg1 &= ~(1 << 5);
     else
@@ -47,25 +47,25 @@ void LIS331DLH::sleep(bool state) {
     _writeByte(CTRL_REG1, _ctrlReg1);
 }
 
-float LIS331DLH::readAccelerationGX() { return readX() * _scalingFactor; }
+float Accelerometer::readAccelerationGX() { return readX() * _scalingFactor; }
 
-float LIS331DLH::readAccelerationGY() { return readY() * _scalingFactor; }
+float Accelerometer::readAccelerationGY() { return readY() * _scalingFactor; }
 
-float LIS331DLH::readAccelerationGZ() { return readZ() * _scalingFactor; }
+float Accelerometer::readAccelerationGZ() { return readZ() * _scalingFactor; }
 
-float LIS331DLH::readAccelerationAX() {
+float Accelerometer::readAccelerationAX() {
     return readAccelerationGX() * GRAVITY_EARTH;
 }
 
-float LIS331DLH::readAccelerationAY() {
+float Accelerometer::readAccelerationAY() {
     return readAccelerationGY() * GRAVITY_EARTH;
 }
 
-float LIS331DLH::readAccelerationAZ() {
+float Accelerometer::readAccelerationAZ() {
     return readAccelerationGZ() * GRAVITY_EARTH;
 }
 
-void LIS331DLH::readAccelerationGXYZ(float& ax, float& ay, float& az) {
+void Accelerometer::readAccelerationGXYZ(float& ax, float& ay, float& az) {
     int16_t x, y, z;
     readXYZ(x, y, z);
     ax = x * _scalingFactor;
@@ -73,7 +73,7 @@ void LIS331DLH::readAccelerationGXYZ(float& ax, float& ay, float& az) {
     az = z * _scalingFactor;
 }
 
-void LIS331DLH::readAccelerationAXYZ(float& ax, float& ay, float& az) {
+void Accelerometer::readAccelerationAXYZ(float& ax, float& ay, float& az) {
     readAccelerationGXYZ(ax, ay, az);
     ax *= GRAVITY_EARTH;
     ay *= GRAVITY_EARTH;

@@ -13,9 +13,9 @@ constexpr auto LPS331_CELSIUS_TO_KELVIN = 273.15;
 constexpr auto LPS331_MILLIBARS_TO_PASCALS = 100;
 constexpr auto LPS331_MILLIBARS_TO_MILLIMETERSHG = 0.75;
 
-class LPS331 : public BaseIMU {
+class Barometer : public BaseIMU {
 public:
-    LPS331(uint8_t slaveAddress);
+    Barometer(uint8_t slaveAddress = 0x5C);
     void begin(TwoWire& wire = Wire);
     float readPressurePascals();
     float readPressureMillibars();

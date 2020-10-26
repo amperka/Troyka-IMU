@@ -16,9 +16,9 @@ constexpr float SENS_250DPS = 0.00875;
 constexpr float SENS_500DPS = 0.0175;
 constexpr float SENS_2000DPS = 0.07;
 
-class L3G4200D : public BaseIMU {
+class Gyroscope : public BaseIMU {
 public:
-    L3G4200D(uint8_t slaveAddress);
+    Gyroscope(uint8_t slaveAddress = 0x68);
     void begin(TwoWire& wire = Wire);
     void sleep(bool state);
     void setRange(GyroscopeRange range);

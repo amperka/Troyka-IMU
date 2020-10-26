@@ -18,9 +18,9 @@ constexpr float SENS_8GAUSS = 3421;
 constexpr float SENS_12GAUSS = 2281;
 constexpr float SENS_16GAUSS = 1711;
 
-class LIS3MDL : public BaseIMU {
+class Compass : public BaseIMU {
 public:
-    LIS3MDL(uint8_t slaveAddress);
+    Compass(uint8_t slaveAddress = 0x1C);
     void begin(TwoWire& wire = Wire);
     void sleep(bool state);
     void setRange(CompassRange range);

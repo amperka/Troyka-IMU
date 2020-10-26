@@ -14,9 +14,9 @@ constexpr float SENS_2G = 1;
 constexpr float SENS_4G = 2;
 constexpr float SENS_8G = 3.9;
 
-class LIS331DLH : public BaseIMU {
+class Accelerometer : public BaseIMU {
 public:
-    LIS331DLH(uint8_t slaveAddress);
+    Accelerometer(uint8_t slaveAddress = 0x18);
     enum class ScaleRange;
     void begin(TwoWire& wire = Wire);
     void sleep(bool state);
