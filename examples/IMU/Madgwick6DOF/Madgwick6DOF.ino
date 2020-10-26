@@ -2,14 +2,14 @@
 #include <TroykaIMU.h>
 
 // Множитель фильтра
-#define BETA 0.22f
+constexpr float BETA = 0.22;
 
 // Создаём объект для фильтра Madgwick
 Madgwick filter;
 // Создаём объект для работы с гироскопом
-Gyroscope gyro;
+Gyroscope gyroscope;
 // Создаём объект для работы с акселерометром
-Accelerometer accel;
+Accelerometer accelerometer;
 
 // Переменные для данных с гироска и акселерометра
 float gx, gy, gz, ax, ay, az;
@@ -26,9 +26,9 @@ void setup() {
     // Выводим сообщение о начале инициализации
     Serial.println("IMU Begin");
     // Инициализируем гироскоп
-    gyro.begin();
+    gyroscope.begin();
     // Инициализируем акселерометр
-    accel.begin();
+    accelerometer.begin();
     // Выводим сообщение об удачной инициализации
     Serial.println("Initialization completed");
 }
@@ -37,9 +37,9 @@ void loop() {
     // Запоминаем текущее время
     unsigned long startMillis = millis();
     // Считываем данные с акселерометра в единицах G
-    accel.readAccelerationGXYZ(ax, ay, az);
-    // Считываем данные с акселерометра в радианах в секунду
-    gyro.readRotationRadXYZ(gx, gy, gz);
+    accelerometer.readAccelerationGXYZ(ax, ay, az);
+    // Считываем данные с гироскопа в радианах в секунду
+    gyroscope.readRotationRadXYZ(gx, gy, gz);
     // Устанавливаем коэффициенты фильтра
     filter.setKoeff(fps, BETA);
     // Обновляем входные данные в фильтр
@@ -50,7 +50,7 @@ void loop() {
     pitch = filter.getPitchDeg();
     roll = filter.getRollDeg();
 
-    // Выводим полученные углы Эйлера в serial-порт
+    // Выводим полученные углы Эйлера в Serial-порт
     Serial.print("yaw: ");
     Serial.print(yaw);
     Serial.print("\t\t");

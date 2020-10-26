@@ -9,8 +9,8 @@
  * by Oleg Kochetov <ok@noiselab.ru>
  */
 
-#ifndef __ATMOSPHERE_GOST4401_H__
-#define __ATMOSPHERE_GOST4401_H__
+#ifndef __ATMOSPHERE_GOST4401_81_H__
+#define __ATMOSPHERE_GOST4401_81_H__
 
 #include <stdint.h>
 
@@ -47,4 +47,4 @@ static const GOST4401_RECORD ag_table[] = {
     { 47000, 270.65, 0.0, 110.9056 },   { 51000, 270.65, -0.0028, 6.69384 }
 };
 
-#endif // __ATMOSPHERE_GOST4401_H__
+#endif // __ATMOSPHERE_GOST4401_81_H__

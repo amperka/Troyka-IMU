@@ -2,7 +2,7 @@
 #include <TroykaIMU.h>
 
 // Создаём объект для работы с акселерометром
-Accelerometer accel;
+Accelerometer accelerometer;
 
 void setup() {
     // Открываем последовательный порт
@@ -10,24 +10,21 @@ void setup() {
     // Выводим сообщение о начале инициализации
     Serial.println("Accelerometer begin");
     // Инициализируем акселерометр
-    accel.begin();
-    // Устанавливаем чувствительность акселерометра
-    // 2g (по умолчанию), 4g, 8g
-    accel.setRange(RANGE_2G);
+    accelerometer.begin();
     // Выводим сообщение об удачной инициализации
     Serial.println("Initialization completed");
 }
 
 void loop() {
     // Выводим направления и величины ускорения в м/с² по оси X
-    Serial.print(accel.readAccelerationAX());
+    Serial.print(accelerometer.readAccelerationAX());
     Serial.print("\t\t");
     // Выводим направления и величины ускорения в м/с² по оси Y
-    Serial.print(accel.readAccelerationAY());
+    Serial.print(accelerometer.readAccelerationAY());
     Serial.print("\t\t");
     // Выводим направления и величины ускорения в м/с² по оси Z
-    Serial.print(accel.readAccelerationAZ());
+    Serial.print(accelerometer.readAccelerationAZ());
     Serial.print("\t\t");
-    Serial.println("");
+    Serial.println();
     delay(100);
 }

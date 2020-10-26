@@ -3,36 +3,36 @@
 L3G4200D::L3G4200D(uint8_t slaveAddress)
     : BaseIMU(slaveAddress) { }
 
-void L3G4200D::setRange(uint8_t range) {
-    switch (range) {
-    case RANGE_250DPS: {
-        _ctrlReg4 |= ADR_FS_250;
-        _scale = SENS_FS_250;
-        break;
-    }
-    case RANGE_500DPS: {
-        _ctrlReg4 |= ADR_FS_500;
-        _scale = SENS_FS_500;
-        break;
-    }
-    case RANGE_2000DPS: {
-        _ctrlReg4 |= ADR_FS_2000;
-        _scale = SENS_FS_2000;
-        break;
-    }
-    default: {
-        _scale = SENS_FS_250;
-    } break;
-    }
-    _writeByte(CTRL_REG4, _ctrlReg4);
-}
-
 void L3G4200D::begin(TwoWire& wire) {
     _wire = &wire;
     _wire->begin();
     _ctrlReg1 |= (1 << 0) | (1 << 2) | (1 << 3) | (1 << 4);
     _writeByte(CTRL_REG1, _ctrlReg1);
-    setRange(RANGE_250DPS);
+    setRange(GyroscopeRange::RANGE_2000DPS);
+}
+
+void L3G4200D::setRange(GyroscopeRange range) {
+    switch (range) {
+    case GyroscopeRange::RANGE_250DPS: {
+        _ctrlReg4 = 0;
+        _scalingFactor = SENS_250DPS;
+        break;
+    }
+    case GyroscopeRange::RANGE_500DPS: {
+        _ctrlReg4 = L3G4200D_CTRL_REG4_FS0;
+        _scalingFactor = SENS_500DPS;
+        break;
+    }
+    case GyroscopeRange::RANGE_2000DPS: {
+        _ctrlReg4 = L3G4200D_CTRL_REG4_FS0 | L3G4200D_CTRL_REG4_FS1;
+        _scalingFactor = SENS_2000DPS;
+        break;
+    }
+    default: {
+        _scalingFactor = SENS_250DPS;
+    } break;
+    }
+    _writeByte(CTRL_REG4, _ctrlReg4);
 }
 
 void L3G4200D::sleep(bool state) {
@@ -44,11 +44,11 @@ void L3G4200D::sleep(bool state) {
     _writeByte(CTRL_REG1, _ctrlReg1);
 }
 
-float L3G4200D::readRotationDegX() { return readX() * _scale; }
+float L3G4200D::readRotationDegX() { return readX() * _scalingFactor; }
 
-float L3G4200D::readRotationDegY() { return readY() * _scale; }
+float L3G4200D::readRotationDegY() { return readY() * _scalingFactor; }
 
-float L3G4200D::readRotationDegZ() { return readZ() * _scale; }
+float L3G4200D::readRotationDegZ() { return readZ() * _scalingFactor; }
 
 float L3G4200D::readRotationRadX() { return readRotationDegX() * DEG_TO_RAD; }
 

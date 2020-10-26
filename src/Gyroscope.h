@@ -3,24 +3,25 @@
 
 #include "BaseIMU.h"
 
-#define RANGE_250DPS 0
-#define RANGE_500DPS 1
-#define RANGE_2000DPS 2
+constexpr auto L3G4200D_CTRL_REG4_FS0 = 0x10;
+constexpr auto L3G4200D_CTRL_REG4_FS1 = 0x20;
 
-#define ADR_FS_250 0x00
-#define ADR_FS_500 0x10
-#define ADR_FS_2000 0x20
+enum class GyroscopeRange {
+    RANGE_250DPS = 1,
+    RANGE_500DPS = 2,
+    RANGE_2000DPS = 3
+};
 
-#define SENS_FS_250 0.00875
-#define SENS_FS_500 0.0175
-#define SENS_FS_2000 0.07
+constexpr float SENS_250DPS = 0.00875;
+constexpr float SENS_500DPS = 0.0175;
+constexpr float SENS_2000DPS = 0.07;
 
 class L3G4200D : public BaseIMU {
 public:
     L3G4200D(uint8_t slaveAddress);
-    void begin(TwoWire &wire = Wire);
+    void begin(TwoWire& wire = Wire);
     void sleep(bool state);
-    void setRange(uint8_t range);
+    void setRange(GyroscopeRange range);
     float readRotationDegX();
     float readRotationDegY();
     float readRotationDegZ();
@@ -29,6 +30,9 @@ public:
     float readRotationRadZ();
     void readRotationDegXYZ(float& gx, float& gy, float& gz);
     void readRotationRadXYZ(float& gx, float& gy, float& gz);
+
+private:
+    float _scalingFactor;
 };
 
 #endif // __GYROSCOPE_H__

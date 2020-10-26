@@ -7,33 +7,33 @@ void LIS3MDL::begin(TwoWire& wire) {
     _wire = &wire;
     _wire->begin();
     _writeByte(CTRL_REG3, _ctrlReg3);
-    setRange(RANGE_4_GAUSS);
+    setRange(CompassRange::RANGE_16GAUSS);
 }
 
-void LIS3MDL::setRange(uint8_t range) {
+void LIS3MDL::setRange(CompassRange range) {
     switch (range) {
-    case RANGE_4_GAUSS: {
-        _ctrlReg2 = ADR_FS_4;
-        _scale = SENS_FS_4;
+    case CompassRange::RANGE_4GAUSS: {
+        _ctrlReg2 = 0;
+        _scalingFactor = SENS_4GAUSS;
         break;
     }
-    case RANGE_8_GAUSS: {
-        _ctrlReg2 = ADR_FS_8;
-        _scale = SENS_FS_8;
+    case CompassRange::RANGE_8GAUSS: {
+        _ctrlReg2 = LIS3MDL_CTRL_REG2_FS0;
+        _scalingFactor = SENS_8GAUSS;
         break;
     }
-    case RANGE_12_GAUSS: {
-        _ctrlReg2 = ADR_FS_12;
-        _scale = SENS_FS_12;
+    case CompassRange::RANGE_12GAUSS: {
+        _ctrlReg2 = LIS3MDL_CTRL_REG2_FS1;
+        _scalingFactor = SENS_12GAUSS;
         break;
     }
-    case RANGE_16_GAUSS: {
-        _ctrlReg2 = ADR_FS_16;
-        _scale = SENS_FS_16;
+    case CompassRange::RANGE_16GAUSS: {
+        _ctrlReg2 = LIS3MDL_CTRL_REG2_FS0 | LIS3MDL_CTRL_REG2_FS1;
+        _scalingFactor = SENS_16GAUSS;
         break;
     }
     default: {
-        _scale = SENS_FS_4;
+        _scalingFactor = SENS_4GAUSS;
     } break;
     }
     _writeByte(CTRL_REG2, _ctrlReg2);
@@ -48,31 +48,32 @@ void LIS3MDL::sleep(bool state) {
     _writeByte(CTRL_REG3, _ctrlReg3);
 }
 
-float LIS3MDL::readMagneticGaussX() { return readX() / _scale; }
+float LIS3MDL::readMagneticGaussX() { return readX() / _scalingFactor; }
 
-float LIS3MDL::readMagneticGaussY() { return readY() / _scale; }
+float LIS3MDL::readMagneticGaussY() { return readY() / _scalingFactor; }
 
-float LIS3MDL::readMagneticGaussZ() { return readZ() / _scale; }
+float LIS3MDL::readMagneticGaussZ() { return readZ() / _scalingFactor; }
 
 void LIS3MDL::readMagneticGaussXYZ(float& mx, float& my, float& mz) {
     int16_t x, y, z;
     readXYZ(x, y, z);
-    mx = x / _scale;
-    my = y / _scale;
-    mz = z / _scale;
+    mx = x / _scalingFactor;
+    my = y / _scalingFactor;
+    mz = z / _scalingFactor;
 }
 
 void LIS3MDL::readCalibrateMagneticGaussXYZ(float& mx, float& my, float& mz) {
     int16_t x, y, z;
     readXYZ(x, y, z);
-    _calibrate((float&)x, (float&)y, (float&)z);
-    mx = x / _scale;
-    my = y / _scale;
-    mz = z / _scale;
+    mx = x, my = y, mz = z;
+    _calibrate(mx, my, mz);
+    mx = x / _scalingFactor;
+    my = y / _scalingFactor;
+    mz = z / _scalingFactor;
 }
 
 void LIS3MDL::setCalibrateMatrix(const float calibrationMatrix[3][3],
-                              const float calibrationBias[3]) {
+                                 const float calibrationBias[3]) {
     memcpy(_calibrationBias, calibrationBias, 3 * sizeof(float));
     memcpy(_calibrationMatrix, calibrationMatrix, 3 * 3 * sizeof(float));
 }
@@ -86,7 +87,8 @@ void LIS3MDL::_calibrate(float& x, float& y, float& z) {
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            calibrationValues[i] += _calibrationMatrix[i][j] * nonCalibrationValues[j];
+            calibrationValues[i]
+                += _calibrationMatrix[i][j] * nonCalibrationValues[j];
         }
     }
 
@@ -96,11 +98,11 @@ void LIS3MDL::_calibrate(float& x, float& y, float& z) {
 }
 
 float LIS3MDL::readAzimut() {
-    float x = readX();
-    float y = readY();
-    float z = readZ();
-    _calibrate(x, y, z);
-    float heading = atan2(x, y);
+    int16_t x, y, z;
+    readXYZ(x, y, z);
+    float mx = x, my = y, mz = z;
+    _calibrate(mx, my, mz);
+    float heading = atan2(mx, my);
 
     if (heading < 0)
         heading += TWO_PI;

@@ -2,21 +2,13 @@
 #include <TroykaIMU.h>
 
 // Создаём объект для работы с гироскопом
-Gyroscope gyro;
+Gyroscope gyroscope;
 // Создаём объект для работы с акселерометром
-Accelerometer accel;
-// Создаём объект для работы с магнитометром/компасом
+Accelerometer accelerometer;
+// Создаём объект для работы с компасом
 Compass compass;
-// Создаём объект для работы с акселерометром
+// Создаём объект для работы с барометром
 Barometer barometer;
-
-// Калибровочные значения, полученные в калибровочной матрице
-// из примера compassCalibration
-const float compassCalibrationBias[3] = { 2269.685, -3415.288, 4698.337 };
-
-const float compassCalibrationMatrix[3][3] = { { 2.464, 0.133, 0.009 },
-                                               { 0.09, 3.081, 0.016 },
-                                               { -0.003, -0.225, 2.922 } };
 
 void setup() {
     // Открываем последовательный порт
@@ -24,48 +16,48 @@ void setup() {
     // Выводим сообщение о начале инициализации
     Serial.println("IMU Begin");
     // Инициализируем гироскоп
-    gyro.begin();
+    gyroscope.begin();
     // Инициализируем акселерометр
-    accel.begin();
+    accelerometer.begin();
     // Инициализируем компас
     compass.begin();
     // Инициализируем барометр
     barometer.begin();
-    // Устанавливаем калибровочные данные
-    compass.setCalibrateMatrix(compassCalibrationMatrix, compassCalibrationBias);
     // Выводим сообщение об удачной инициализации
     Serial.println("Initialization completed");
     Serial.println("Gyroscope\t\t\tAccelerometer\t\t\tCompass\t\tBarometer");
 }
 
 void loop() {
-    // Выводим угловую скорость в градусах в секунду относительно оси X
-    Serial.print(gyro.readRotationDegX());
+    // Выводим угловую скорость в градусах в секунду относительно оси X, Y и Z
+    Serial.print(gyroscope.readRotationDegX());
     Serial.print("\t");
-    // Выводим угловую скорость в градусах в секунду относительно оси Y
-    Serial.print(gyro.readRotationDegY());
+    Serial.print(gyroscope.readRotationDegY());
     Serial.print("\t");
-    // Выводим угловую скорость в градусах в секунду относительно оси Z
-    Serial.print(gyro.readRotationDegZ());
+    Serial.print(gyroscope.readRotationDegZ());
     Serial.print("\t\t");
-    // Выводим направления и величины ускорения в м/с² по оси X
-    Serial.print(accel.readAccelerationAX());
+    // Выводим направления и величины ускорения в м/с² относительно оси X, Y и Z
+    Serial.print(accelerometer.readAccelerationAX());
     Serial.print("\t");
-    // Выводим направления и величины ускорения в м/с² по оси Y
-    Serial.print(accel.readAccelerationAY());
+    Serial.print(accelerometer.readAccelerationAY());
     Serial.print("\t");
-    // Выводим направления и величины ускорения в м/с² по оси Z
-    Serial.print(accel.readAccelerationAZ());
+    Serial.print(accelerometer.readAccelerationAZ());
     Serial.print("\t\t");
-    // Выводим азимут относительно оси Z
-    Serial.print(compass.readAzimut());
-    Serial.print(" Degrees\t");
-    // Выводим значения абсолютного давления
-    Serial.print(barometer.readPressureMillibars());
+    // Выводим напряженность магнитного поля в Гауссах относительно оси X, Y и Z
+    Serial.print(compass.readMagneticGaussX());
     Serial.print("\t");
-    // Выодим значения температуры окружающей среды
+    Serial.print(compass.readMagneticGaussY());
+    Serial.print("\t");
+    Serial.print(compass.readMagneticGaussZ());
+    Serial.print("\t\t");
+    // Выводим значения атмосферного давления в мм рт.ст.
+    Serial.print(barometer.readPressureMillimetersHg());
+    Serial.print("\t");
+    // Выводим значения высоты над уровнем море
+    Serial.print(barometer.readAltitude());
+    Serial.print("\t");
+    // Выводим значения температуры окружающей среды
     Serial.print(barometer.readTemperatureC());
-    Serial.print("\t");
-    Serial.println("");
+    Serial.println();
     delay(100);
 }

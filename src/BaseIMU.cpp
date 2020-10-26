@@ -1,23 +1,23 @@
 #include "BaseIMU.h"
 
 int16_t BaseIMU::readX() {
-    return ((int16_t)_readByte(OUT_X + 1) << 8) | _readByte(OUT_X);
+    return ((int16_t)_readByte(OUT_X_H) << 8) | _readByte(OUT_X_L);
 }
 
 int16_t BaseIMU::readY() {
-    return ((int16_t)_readByte(OUT_Y + 1) << 8) | _readByte(OUT_Y);
+    return ((int16_t)_readByte(OUT_Y_H) << 8) | _readByte(OUT_Y_L);
 }
 
 int16_t BaseIMU::readZ() {
-    return ((int16_t)_readByte(OUT_Z + 1) << 8) | _readByte(OUT_Z);
+    return ((int16_t)_readByte(OUT_Z_H) << 8) | _readByte(OUT_Z_L);
 }
 
-void BaseIMU::readXYZ(int16_t &x, int16_t &y, int16_t &z) {
+void BaseIMU::readXYZ(int16_t& x, int16_t& y, int16_t& z) {
     uint8_t data[6];
-    _readBytes(0x80 | OUT_X, data, 6);
-    x = ((int16_t)data[1] << 8 ) | data[0];
-    y = ((int16_t)data[3] << 8 ) | data[2];
-    z = ((int16_t)data[5] << 8 ) | data[4];
+    _readBytes(0x80 | OUT_X_L, data, 6);
+    x = ((int16_t)data[1] << 8) | data[0];
+    y = ((int16_t)data[3] << 8) | data[2];
+    z = ((int16_t)data[5] << 8) | data[4];
 }
 
 uint8_t BaseIMU::_readByte(uint8_t regAddress) {

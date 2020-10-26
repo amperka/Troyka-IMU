@@ -4,15 +4,18 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#define CTRL_REG1 0x20
-#define CTRL_REG2 0x21
-#define CTRL_REG3 0x22
-#define CTRL_REG4 0x23
-#define CTRL_REG5 0x24
+constexpr auto CTRL_REG1 = 0x20;
+constexpr auto CTRL_REG2 = 0x21;
+constexpr auto CTRL_REG3 = 0x22;
+constexpr auto CTRL_REG4 = 0x23;
+constexpr auto CTRL_REG5 = 0x24;
 
-#define OUT_X 0x28
-#define OUT_Y 0x2A
-#define OUT_Z 0x2C
+constexpr auto OUT_X_L = 0x28;
+constexpr auto OUT_X_H = 0x29;
+constexpr auto OUT_Y_L = 0x2A;
+constexpr auto OUT_Y_H = 0x2B;
+constexpr auto OUT_Z_L = 0x2C;
+constexpr auto OUT_Z_H = 0x2D;
 
 class BaseIMU {
 public:

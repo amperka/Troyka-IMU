@@ -9,9 +9,6 @@ void setup() {
     Serial.begin(9600);
     // Инициализируем компас
     compass.begin();
-    // Устанавливаем чувствительность компаса
-    // ±4 gauss (по умолчанию), ±8 gauss, ±12 gauss, ±16 gauss
-    compass.setRange(RANGE_4_GAUSS);
 }
 
 void loop() {

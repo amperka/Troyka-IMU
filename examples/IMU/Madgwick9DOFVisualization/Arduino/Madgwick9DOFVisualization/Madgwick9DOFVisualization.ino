@@ -2,14 +2,15 @@
 #include <TroykaIMU.h>
 
 // Множитель фильтра
-#define BETA 0.22f
+constexpr float BETA = 0.22;
 
 // Создаём объект для фильтра Madgwick
 Madgwick filter;
+
 // Создаём объект для работы с гироскопом
-Gyroscope gyro;
+Gyroscope gyroscope;
 // Создаём объект для работы с акселерометром
-Accelerometer accel;
+Accelerometer accelerometer;
 // Создаём объект для работы с компасом
 Compass compass;
 
@@ -34,9 +35,9 @@ void setup() {
     // Открываем последовательный порт
     Serial.begin(9600);
     // Инициализируем гироскоп
-    gyro.begin();
+    gyroscope.begin();
     // Инициализируем акселерометр
-    accel.begin();
+    accelerometer.begin();
     // Инициализируем компас
     compass.begin();
     // Устанавливаем калибровочные данные
@@ -49,9 +50,9 @@ void loop() {
     unsigned long startMillis = millis();
 
     // Считываем данные с акселерометра в единицах G
-    accel.readAccelerationGXYZ(ax, ay, az);
+    accelerometer.readAccelerationGXYZ(ax, ay, az);
     // Считываем данные с гироскопа в радианах в секунду
-    gyro.readRotationRadXYZ(gx, gy, gz);
+    gyroscope.readRotationRadXYZ(gx, gy, gz);
     // Считываем данные с компаса в Гауссах
     compass.readCalibrateMagneticGaussXYZ(mx, my, mz);
 
