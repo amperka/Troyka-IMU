@@ -6,7 +6,7 @@ Compass::Compass(uint8_t slaveAddress)
 void Compass::begin(TwoWire& wire) {
     _wire = &wire;
     _wire->begin();
-    _writeByte(CTRL_REG3, _ctrlReg3);
+    _writeByte(BASE_IMU_CTRL_REG3, _ctrlReg3);
     setRange(CompassRange::RANGE_16GAUSS);
 }
 
@@ -36,16 +36,16 @@ void Compass::setRange(CompassRange range) {
         _scalingFactor = SENS_4GAUSS;
     } break;
     }
-    _writeByte(CTRL_REG2, _ctrlReg2);
+    _writeByte(BASE_IMU_CTRL_REG2, _ctrlReg2);
 }
 
 void Compass::sleep(bool state) {
     if (state)
-        _ctrlReg3 |= (3 << 0);
+        _ctrlReg3 |= LIS3MDL_CTRL_REG3_MD0 | LIS3MDL_CTRL_REG3_MD1;
     else
-        _ctrlReg3 &= ~(3 << 0);
+        _ctrlReg3 &= ~(LIS3MDL_CTRL_REG3_MD0 | LIS3MDL_CTRL_REG3_MD1);
 
-    _writeByte(CTRL_REG3, _ctrlReg3);
+    _writeByte(BASE_IMU_CTRL_REG3, _ctrlReg3);
 }
 
 float Compass::readMagneticGaussX() { return readX() / _scalingFactor; }

@@ -3,8 +3,19 @@
 
 #include "BaseIMU.h"
 
-constexpr auto LIS3MDL_CTRL_REG2_FS0 = 0x20;
-constexpr auto LIS3MDL_CTRL_REG2_FS1 = 0x40;
+// Registers addrress
+constexpr uint8_t LIS3MDL_CTRL_REG2_FS0 = 0x20;
+constexpr uint8_t LIS3MDL_CTRL_REG2_FS1 = 0x40;
+
+// Registers value bits
+constexpr uint8_t LIS3MDL_CTRL_REG3_MD0 = 0x00;
+constexpr uint8_t LIS3MDL_CTRL_REG3_MD1 = 0x02;
+
+// Constans
+constexpr float SENS_4GAUSS = 6842;
+constexpr float SENS_8GAUSS = 3421;
+constexpr float SENS_12GAUSS = 2281;
+constexpr float SENS_16GAUSS = 1711;
 
 enum class CompassRange {
     RANGE_4GAUSS = 1,
@@ -12,11 +23,6 @@ enum class CompassRange {
     RANGE_12GAUSS = 3,
     RANGE_16GAUSS = 4
 };
-
-constexpr float SENS_4GAUSS = 6842;
-constexpr float SENS_8GAUSS = 3421;
-constexpr float SENS_12GAUSS = 2281;
-constexpr float SENS_16GAUSS = 1711;
 
 class Compass : public BaseIMU {
 public:

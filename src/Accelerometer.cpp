@@ -6,14 +6,14 @@ Accelerometer::Accelerometer(uint8_t slaveAddress)
 void Accelerometer::begin(TwoWire& wire) {
     _wire = &wire;
     _wire->begin();
-    _ctrlReg1 |= (1 << 0);
-    _ctrlReg1 |= (1 << 1);
-    _ctrlReg1 |= (1 << 2);
-    _ctrlReg1 |= (1 << 5);
-    _writeByte(CTRL_REG1, _ctrlReg1);
+    _ctrlReg1 |= LIS331DLH_CTRL_REG1_X_EN | LIS331DLH_CTRL_REG1_Y_EN
+                 | LIS331DLH_CTRL_REG1_Z_EN;
+    _ctrlReg1 |= LIS331DLH_CTRL_REG1_PM0;
+    _writeByte(BASE_IMU_CTRL_REG1, _ctrlReg1);
     setRange(AccelerometerRange::RANGE_2G);
 }
 
+// Set range scale output data from datasheet
 void Accelerometer::setRange(AccelerometerRange range) {
     switch (range) {
     case AccelerometerRange::RANGE_2G: {
@@ -35,16 +35,16 @@ void Accelerometer::setRange(AccelerometerRange range) {
         _scalingFactor = SENS_2G * 4 / pow(2, 16);
     } break;
     }
-    _writeByte(CTRL_REG4, _ctrlReg4);
+    _writeByte(BASE_IMU_CTRL_REG4, _ctrlReg4);
 }
 
 void Accelerometer::sleep(bool state) {
     if (state)
-        _ctrlReg1 &= ~(1 << 5);
+        _ctrlReg1 &= ~LIS331DLH_CTRL_REG1_PM0;
     else
-        _ctrlReg1 |= (1 << 5);
+        _ctrlReg1 |= LIS331DLH_CTRL_REG1_PM0;
 
-    _writeByte(CTRL_REG1, _ctrlReg1);
+    _writeByte(BASE_IMU_CTRL_REG1, _ctrlReg1);
 }
 
 float Accelerometer::readAccelerationGX() { return readX() * _scalingFactor; }

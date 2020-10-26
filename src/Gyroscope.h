@@ -3,18 +3,26 @@
 
 #include "BaseIMU.h"
 
-constexpr auto L3G4200D_CTRL_REG4_FS0 = 0x10;
-constexpr auto L3G4200D_CTRL_REG4_FS1 = 0x20;
+// Registers address
+constexpr uint8_t L3G4200D_CTRL_REG4_FS0 = 0x10;
+constexpr uint8_t L3G4200D_CTRL_REG4_FS1 = 0x20;
+
+// Registers value bits
+constexpr uint8_t L3G4200D_CTRL_REG1_X_EN = 0x01;
+constexpr uint8_t L3G4200D_CTRL_REG1_Y_EN = 0x02;
+constexpr uint8_t L3G4200D_CTRL_REG1_Z_EN = 0x04;
+constexpr uint8_t L3G4200D_CTRL_REG1_PD = 0x08;
+
+// Constans
+constexpr float SENS_250DPS = 0.00875;
+constexpr float SENS_500DPS = 0.0175;
+constexpr float SENS_2000DPS = 0.07;
 
 enum class GyroscopeRange {
     RANGE_250DPS = 1,
     RANGE_500DPS = 2,
     RANGE_2000DPS = 3
 };
-
-constexpr float SENS_250DPS = 0.00875;
-constexpr float SENS_500DPS = 0.0175;
-constexpr float SENS_2000DPS = 0.07;
 
 class Gyroscope : public BaseIMU {
 public:

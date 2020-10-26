@@ -6,11 +6,14 @@ Gyroscope::Gyroscope(uint8_t slaveAddress)
 void Gyroscope::begin(TwoWire& wire) {
     _wire = &wire;
     _wire->begin();
-    _ctrlReg1 |= (1 << 0) | (1 << 2) | (1 << 3) | (1 << 4);
-    _writeByte(CTRL_REG1, _ctrlReg1);
+    _ctrlReg1 |= L3G4200D_CTRL_REG1_X_EN | L3G4200D_CTRL_REG1_Y_EN
+                 | L3G4200D_CTRL_REG1_Z_EN;
+    _ctrlReg1 |= L3G4200D_CTRL_REG1_PD;
+    _writeByte(BASE_IMU_CTRL_REG1, _ctrlReg1);
     setRange(GyroscopeRange::RANGE_2000DPS);
 }
 
+// Set range scale output data from datasheet
 void Gyroscope::setRange(GyroscopeRange range) {
     switch (range) {
     case GyroscopeRange::RANGE_250DPS: {
@@ -32,16 +35,16 @@ void Gyroscope::setRange(GyroscopeRange range) {
         _scalingFactor = SENS_250DPS;
     } break;
     }
-    _writeByte(CTRL_REG4, _ctrlReg4);
+    _writeByte(BASE_IMU_CTRL_REG4, _ctrlReg4);
 }
 
 void Gyroscope::sleep(bool state) {
     if (state) {
-        _ctrlReg1 &= ~(1 << 3);
+        _ctrlReg1 &= ~L3G4200D_CTRL_REG1_PD;
     } else {
-        _ctrlReg1 |= (1 << 3);
+        _ctrlReg1 |= L3G4200D_CTRL_REG1_PD;
     }
-    _writeByte(CTRL_REG1, _ctrlReg1);
+    _writeByte(BASE_IMU_CTRL_REG1, _ctrlReg1);
 }
 
 float Gyroscope::readRotationDegX() { return readX() * _scalingFactor; }
@@ -59,9 +62,9 @@ float Gyroscope::readRotationRadZ() { return readRotationDegZ() * DEG_TO_RAD; }
 void Gyroscope::readRotationDegXYZ(float& gx, float& gy, float& gz) {
     int16_t x, y, z;
     readXYZ(x, y, z);
-    gx = x * _scale;
-    gy = y * _scale;
-    gz = z * _scale;
+    gx = x * _scalingFactor;
+    gy = y * _scalingFactor;
+    gz = z * _scalingFactor;
 }
 
 void Gyroscope::readRotationRadXYZ(float& gx, float& gy, float& gz) {
