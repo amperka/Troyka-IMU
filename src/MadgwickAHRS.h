@@ -31,13 +31,10 @@ public:
     float getYawDeg();
 
 private:
-    volatile float _beta;
-    volatile float _zeta;
-    volatile float _frequency;
-    volatile float _q0;
-    volatile float _q1;
-    volatile float _q2;
-    volatile float _q3;
+    float _beta;
+    float _zeta;
+    float _frequency;
+    float _q0, _q1, _q2, _q3;
 };
 
 #endif // __MADGWICK_AHRS_H__
