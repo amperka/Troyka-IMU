@@ -8,7 +8,7 @@ Gyroscope gyroscope;
 // Создаём объект для работы с акселерометром
 Accelerometer accelerometer;
 
-// Переменные для данных с гироска и акселерометра
+// Переменные для данных с гироска и акселерометра и компаса
 float gx, gy, gz, ax, ay, az;
 
 // Переменные для хранения самолётных углов ориентации
@@ -20,45 +20,44 @@ float fps = 100;
 void setup() {
     // Открываем последовательный порт
     Serial.begin(9600);
-    // Выводим сообщение о начале инициализации
-    Serial.println("IMU Begin");
     // Инициализируем гироскоп
     gyroscope.begin();
     // Инициализируем акселерометр
     accelerometer.begin();
     // Инициализируем фильтр
     filter.begin();
-    // Выводим сообщение об удачной инициализации
-    Serial.println("Initialization completed");
 }
 
 void loop() {
     // Запоминаем текущее время
     unsigned long startMillis = millis();
+
     // Считываем данные с акселерометра в единицах G
     accelerometer.readAccelerationGXYZ(ax, ay, az);
     // Считываем данные с гироскопа в радианах в секунду
     gyroscope.readRotationRadXYZ(gx, gy, gz);
+
     // Устанавливаем частоту фильтра
     filter.setFrequency(fps);
     // Обновляем входные данные в фильтр
     filter.update(gx, gy, gz, ax, ay, az);
 
-    // Получаем из фильтра углы: yaw, pitch и roll 
-    yaw = filter.getYawDeg();
-    pitch = filter.getPitchDeg();
-    roll = filter.getRollDeg();
-
-    // Выводим полученные углы Эйлера в Serial-порт
-    Serial.print("yaw: ");
-    Serial.print(yaw);
-    Serial.print("\t\t");
-    Serial.print("pitch: ");
-    Serial.print(pitch);
-    Serial.print("\t\t");
-    Serial.print("roll: ");
-    Serial.println(roll);
-
+    if (Serial.available() > 0) {
+        int val = Serial.read();
+        // Если пришёл символ 's'
+        if (val == 's') {
+            float q0, q1, q2, q3;
+            filter.readQuaternions(q0, q1, q2, q3);
+            // Выводим кватернионы в serial-порт
+            Serial.print(q0);
+            Serial.print(",");
+            Serial.print(q1);
+            Serial.print(",");
+            Serial.print(q2);
+            Serial.print(",");
+            Serial.println(q3);
+        }
+    }
     // Вычисляем затраченное время на обработку данных
     unsigned long deltaMillis = millis() - startMillis;
     // Вычисляем частоту обработки фильтра

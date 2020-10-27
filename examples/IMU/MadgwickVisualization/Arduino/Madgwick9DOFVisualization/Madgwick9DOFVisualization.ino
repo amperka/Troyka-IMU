@@ -1,12 +1,8 @@
 // Библиотека для работы с модулями IMU
 #include <TroykaIMU.h>
 
-// Множитель фильтра
-constexpr float BETA = 0.22;
-
 // Создаём объект для фильтра Madgwick
 Madgwick filter;
-
 // Создаём объект для работы с гироскопом
 Gyroscope gyroscope;
 // Создаём объект для работы с акселерометром
@@ -20,16 +16,16 @@ float gx, gy, gz, ax, ay, az, mx, my, mz;
 // Переменные для хранения самолётных углов ориентации
 float yaw, pitch, roll;
 
-// Переменная для хранения частоты выборок фильтра
+// Переменная для хранения частоты фильтра
 float fps = 100;
 
 // Калибровочные значения, полученные в калибровочной матрице
 // из примера compassCalibration
-const float compassCalibrationBias[3] = { 2269.685, -3415.288, 4698.337 };
+const float compassCalibrationBias[3] = { 567.893, -825.35, 1061.436 };
 
-const float compassCalibrationMatrix[3][3] = { { 2.464, 0.133, 0.009 },
-                                               { 0.09, 3.081, 0.016 },
-                                               { -0.003, -0.225, 2.922 } };
+const float compassCalibrationMatrix[3][3] = { { 1.909, 0.082, 0.004 },
+                                               { 0.049, 1.942, -0.235 },
+                                               { -0.003, 0.008, 1.944 } };
 
 void setup() {
     // Открываем последовательный порт
@@ -40,6 +36,8 @@ void setup() {
     accelerometer.begin();
     // Инициализируем компас
     compass.begin();
+    // Инициализируем фильтр
+    filter.begin();
     // Устанавливаем калибровочные данные
     compass.setCalibrateMatrix(compassCalibrationMatrix,
                                compassCalibrationBias);
@@ -55,9 +53,8 @@ void loop() {
     gyroscope.readRotationRadXYZ(gx, gy, gz);
     // Считываем данные с компаса в Гауссах
     compass.readCalibrateMagneticGaussXYZ(mx, my, mz);
-
-    // Устанавливаем коэффициенты фильтра
-    filter.setKoeff(fps, BETA);
+    // Устанавливаем частоту фильтра
+    filter.setFrequency(fps);
     // Обновляем входные данные в фильтр
     filter.update(gx, gy, gz, ax, ay, az, mx, my, mz);
 
@@ -66,7 +63,7 @@ void loop() {
         // Если пришёл символ 's'
         if (val == 's') {
             float q0, q1, q2, q3;
-            filter.readQuaternions(&q0, &q1, &q2, &q3);
+            filter.readQuaternions(q0, q1, q2, q3);
             // Выводим кватернионы в serial-порт
             Serial.print(q0);
             Serial.print(",");

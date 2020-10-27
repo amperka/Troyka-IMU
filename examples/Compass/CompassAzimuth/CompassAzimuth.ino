@@ -6,11 +6,11 @@ Compass compass;
 
 // Калибровочные значения, полученные в калибровочной матрице
 // из примера compassCalibration
-const float compassCalibrationBias[3] = { 2269.685, -3415.288, 4698.337 };
+const float compassCalibrationBias[3] = { 567.893, -825.35, 1061.436 };
 
-const float compassCalibrationMatrix[3][3] = { { 2.464, 0.133, 0.009 },
-                                               { 0.09, 3.081, 0.016 },
-                                               { -0.003, -0.225, 2.922 } };
+const float compassCalibrationMatrix[3][3] = { { 1.909, 0.082, 0.004 },
+                                               { 0.049, 1.942, -0.235 },
+                                               { -0.003, 0.008, 1.944} };
 
 void setup() {
     // Открываем последовательный порт

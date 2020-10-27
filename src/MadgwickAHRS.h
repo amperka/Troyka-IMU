@@ -3,16 +3,23 @@
 
 #include <math.h>
 
-#define SAMPLE_FREQ 1000.0f // sample frequency in Hz
-#define BETA_DEF 0.5f // 2 * proportional gain
+// Gyroscope measurement error in rads/s (start at 40 deg/s)
+constexpr float GYRO_MEAS_ERROR = M_PI * (40.0f / 180.0f);
+// Gyroscope measurement drift in rad/s/s (start at 0.0 deg/s/s)
+constexpr float GYRO_MEAS_DRIFT = M_PI * (0.0f / 180.0f);
+// Compute beta
+constexpr float BETA_DEFAULT = sqrt(3.0f / 4.0f) * GYRO_MEAS_ERROR;
+// Compute zeta
+constexpr float ZETA_DEFAULT = sqrt(3.0f / 4.0f) * GYRO_MEAS_DRIFT;
 
 class Madgwick {
-
 public:
     Madgwick();
-    void readQuaternions(float* q0, float* q1, float* q2, float* q3);
+    void begin();
     void reset();
-    void setKoeff(float sampleFreq, float beta);
+    void setSettings(float beta = BETA_DEFAULT, float zeta = ZETA_DEFAULT);
+    void setFrequency(float frequency);
+    void readQuaternions(float& q0, float& q1, float& q2, float& q3);
     void update(float gx, float gy, float gz, float ax, float ay, float az,
                 float mx, float my, float mz);
     void update(float gx, float gy, float gz, float ax, float ay, float az);
@@ -24,13 +31,13 @@ public:
     float getYawDeg();
 
 private:
-    float invSqrt(float x);
-    volatile float _beta = BETA_DEF; // algorithm gain
-    volatile float _sampleFreq = SAMPLE_FREQ;
-    volatile float _q0 = 1.0f;
-    volatile float _q1 = 0.0f;
-    volatile float _q2 = 0.0f;
-    volatile float _q3 = 0.0f;
+    volatile float _beta;
+    volatile float _zeta;
+    volatile float _frequency;
+    volatile float _q0;
+    volatile float _q1;
+    volatile float _q2;
+    volatile float _q3;
 };
 
 #endif // __MADGWICK_AHRS_H__
