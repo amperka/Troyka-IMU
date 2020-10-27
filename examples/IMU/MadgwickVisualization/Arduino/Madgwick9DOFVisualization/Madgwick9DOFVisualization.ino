@@ -7,7 +7,7 @@ Madgwick filter;
 Gyroscope gyroscope;
 // Создаём объект для работы с акселерометром
 Accelerometer accelerometer;
-// Создаём объект для работы с компасом
+// Создаём объект для работы с магнитометром/компасом
 Compass compass;
 
 // Переменные для данных с гироска, акселерометра и компаса
@@ -63,7 +63,7 @@ void loop() {
         // Если пришёл символ 's'
         if (val == 's') {
             float q0, q1, q2, q3;
-            filter.readQuaternions(q0, q1, q2, q3);
+            filter.readQuaternion(q0, q1, q2, q3);
             // Выводим кватернионы в serial-порт
             Serial.print(q0);
             Serial.print(",");

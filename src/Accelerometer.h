@@ -19,8 +19,11 @@ constexpr uint8_t LIS331DLH_CTRL_REG1_PM0 = 0x20;
 constexpr uint8_t LIS331DLH_CTRL_REG1_PM1 = 0x40;
 constexpr uint8_t LIS331DLH_CTRL_REG1_PM2 = 0x80;
 
-// Constans
+// Constans, Gravity of Earth
 constexpr float GRAVITY_EARTH = 9.8;
+
+// Sensor sensitivity depending on selectable full scales
+// Use the datasheet for details
 constexpr float SENS_2G = 1;
 constexpr float SENS_4G = 2;
 constexpr float SENS_8G = 3.9;
@@ -41,6 +44,27 @@ public:
     float readAccelerationAZ();
     void readAccelerationGXYZ(float& ax, float& ay, float& az);
     void readAccelerationAXYZ(float& ax, float& ay, float& az);
+    // DEPRECATED fuctions
+    // Use readAccelerationGX instead
+    float readGX() { return readAccelerationGX(); }
+    // Use readAccelerationGY instead
+    float readGY() { return readAccelerationGY(); }
+    // Use readAccelerationGZ instead
+    float readGZ() { return readAccelerationGZ(); }
+    // Use readAccelerationAX instead
+    float readAX() { return readAccelerationAX(); }
+    // Use readAccelerationAY instead
+    float readAY() { return readAccelerationAY(); }
+    // Use readAccelerationAZ instead
+    float readAZ() { return readAccelerationAZ(); }
+    // Use readAccelerationGXYZ instead
+    void readGXYZ(float* ax, float* ay, float* az) {
+        readAccelerationGXYZ(*ax, *ay, *az);
+    }
+    // Use readAccelerationAXYZ instead
+    void readAXYZ(float* ax, float* ay, float* az) {
+        readAccelerationAXYZ(*ax, *ay, *az);
+    }
 
 private:
     float _scalingFactor;

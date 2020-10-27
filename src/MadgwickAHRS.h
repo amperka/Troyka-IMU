@@ -19,7 +19,7 @@ public:
     void reset();
     void setSettings(float beta = BETA_DEFAULT, float zeta = ZETA_DEFAULT);
     void setFrequency(float frequency);
-    void readQuaternions(float& q0, float& q1, float& q2, float& q3);
+    void readQuaternion(float& q0, float& q1, float& q2, float& q3);
     void update(float gx, float gy, float gz, float ax, float ay, float az,
                 float mx, float my, float mz);
     void update(float gx, float gy, float gz, float ax, float ay, float az);
@@ -29,7 +29,11 @@ public:
     float getPitchDeg();
     float getRollDeg();
     float getYawDeg();
-
+    // DEPRECATED fuctions
+    // Use readQuaternion instead
+    void readQuaternions(float *q0, float *q1, float *q2, float *q3);
+    // Use setSettings and setFrequency instead
+    void setKoeff(float frequency, float beta);
 private:
     float _beta;
     float _zeta;

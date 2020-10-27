@@ -16,7 +16,7 @@ String message;
 float[] q = new float[4];
 Quaternion quat = new Quaternion(1, 0, 0, 0);
 // New line character in ASCII
-int newLine = 13; 
+final char newLine = '\n';
 String [] massQ = new String [4];
 float[] ypr = new float[3];
 

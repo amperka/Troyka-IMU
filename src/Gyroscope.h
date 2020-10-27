@@ -17,7 +17,8 @@ constexpr uint8_t L3G4200D_CTRL_REG1_Y_EN = 0x02;
 constexpr uint8_t L3G4200D_CTRL_REG1_Z_EN = 0x04;
 constexpr uint8_t L3G4200D_CTRL_REG1_PD = 0x08;
 
-// Constans
+// Constans: sensor sensitivity depending on selectable full scales
+// Use the datasheet for details
 constexpr float SENS_250DPS = 0.00875;
 constexpr float SENS_500DPS = 0.0175;
 constexpr float SENS_2000DPS = 0.07;
@@ -42,6 +43,27 @@ public:
     float readRotationRadZ();
     void readRotationDegXYZ(float& gx, float& gy, float& gz);
     void readRotationRadXYZ(float& gx, float& gy, float& gz);
+    // DEPRECATED fuctions
+    // Use readRotationDegX instead
+    float readDegPerSecX() { return readRotationDegX(); }
+    // Use readRotationDegY instead
+    float readDegPerSecY() { return readRotationDegY(); }
+    // Use readRotationDegZ instead
+    float readDegPerSecZ() { return readRotationDegZ(); }
+    // Use readRotationRadX instead
+    float readRadPerSecX() { return readRotationRadX(); }
+    // Use readRotationRadY instead
+    float readRadPerSecY() { return readRotationRadY(); }
+    // Use readRotationRadZ instead
+    float readRadPerSecZ() { return readRotationRadZ(); }
+    // Use readRotationDegXYZ instead
+    void readDegPerSecXYZ(float* ax, float* ay, float* az) {
+        readRotationDegXYZ(*ax, *ay, *az);
+    }
+    // Use readRotationRadXYZ instead
+    void readRadPerSecXYZ(float* ax, float* ay, float* az) {
+        readRotationRadXYZ(*ax, *ay, *az);
+    }
 
 private:
     float _scalingFactor;

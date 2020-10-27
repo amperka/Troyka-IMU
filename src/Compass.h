@@ -15,7 +15,8 @@ constexpr uint8_t LIS3MDL_CTRL_REG2_FS1 = 0x40;
 constexpr uint8_t LIS3MDL_CTRL_REG3_MD0 = 0x00;
 constexpr uint8_t LIS3MDL_CTRL_REG3_MD1 = 0x02;
 
-// Constans
+// Constans: sensor sensitivity depending on selectable full scales
+// Use the datasheet for details
 constexpr float SENS_4GAUSS = 6842;
 constexpr float SENS_8GAUSS = 3421;
 constexpr float SENS_12GAUSS = 2281;
@@ -42,6 +43,22 @@ public:
     void setCalibrateMatrix(const float calibrationMatrix[3][3],
                             const float bias[3]);
     float readAzimut();
+    // DEPRECATED fuctions
+    // Use readMagneticGaussX instead
+    float readGaussX() { return readMagneticGaussX(); }
+    // Use readMagneticGaussY instead
+    float readGaussY() { return readMagneticGaussY(); }
+    // Use readMagneticGaussZ instead
+    float readGaussZ() { return readMagneticGaussZ(); }
+    // Use readCalibrateMagneticGaussXYZ instead
+    void readCalibrateGaussXYZ(float* mx, float* my, float* mz) {
+        readCalibrateMagneticGaussXYZ(*mx, *my, *mz);
+    }
+    // Use setCalibrateMatrix instead
+    void calibrateMatrix(const float compassCalibrationMatrix[3][3],
+                         const float compassCalibrationBias[3]) {
+        setCalibrateMatrix(compassCalibrationMatrix, compassCalibrationBias);
+    }
 
 private:
     void _calibrate(float& mx, float& my, float& mz);

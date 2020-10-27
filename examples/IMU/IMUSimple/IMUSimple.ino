@@ -5,7 +5,7 @@
 Gyroscope gyroscope;
 // Создаём объект для работы с акселерометром
 Accelerometer accelerometer;
-// Создаём объект для работы с компасом
+// Создаём объект для работы с магнитометром/компасом
 Compass compass;
 // Создаём объект для работы с барометром
 Barometer barometer;

@@ -25,7 +25,7 @@ void Madgwick::setFrequency(float frequency) {
     _frequency = frequency;
 }
 
-void Madgwick::readQuaternions(float& q0, float& q1, float& q2, float& q3) {
+void Madgwick::readQuaternion(float& q0, float& q1, float& q2, float& q3) {
     q0 = _q0;
     q1 = _q1;
     q2 = _q2;
@@ -264,3 +264,17 @@ float Madgwick::getYawDeg() { return getYawRad() * RAD_TO_DEG; }
 float Madgwick::getPitchDeg() { return getPitchRad() * RAD_TO_DEG; }
 
 float Madgwick::getRollDeg() { return getRollRad() * RAD_TO_DEG; }
+
+// DEPRECATED: use readQuaternion instead
+void Madgwick::readQuaternions(float *q0, float *q1, float *q2, float *q3) {
+    *q0 = _q0;
+    *q1 = _q1;
+    *q2 = _q2;
+    *q3 = _q3;
+}
+
+// DEPRECATED: use setSettings and setFrequency instead
+void Madgwick::setKoeff(float frequency, float beta) {
+    _beta = beta;
+    _frequency = frequency;
+}
