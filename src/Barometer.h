@@ -4,8 +4,8 @@
 #include "BaseIMU.h"
 
 // I²C-address devices LPS25HB and LPS331
-constexpr uint8_t LPS_SLAVE_ADDRESS = 0x1C;
-constexpr uint8_t LPS_SLAVE_ADDRESS_ALT = 0x1D;
+constexpr uint8_t LPS_SLAVE_ADDRESS = 0x5C;
+constexpr uint8_t LPS_SLAVE_ADDRESS_ALT = 0x5D;
 
 // Registers address LPS25HB and LPS331
 constexpr uint8_t LPS_CTRL_REG1_ODR0 = 0x10;

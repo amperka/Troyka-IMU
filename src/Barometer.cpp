@@ -9,9 +9,9 @@ void Barometer::begin(TwoWire& wire) {
     _wire->begin();
     _deviceID = readDeviceID();
     if (_deviceID == LPS331_WHO_AM_I) {
-        _ctrlReg1 |= LPS_CTRL_REG1_ODR0 | LPS_CTRL_REG1_ODR0 | LPS_CTRL_REG1_ODR0;
+        _ctrlReg1 |= LPS_CTRL_REG1_ODR0 | LPS_CTRL_REG1_ODR1 | LPS_CTRL_REG1_ODR2;
     } else if (_deviceID == LPS25HB_WHO_AM_I) {
-        _ctrlReg1 |= LPS_CTRL_REG1_ODR0 | LPS_CTRL_REG1_ODR0 | LPS_CTRL_REG1_ODR0;
+        _ctrlReg1 |= LPS_CTRL_REG1_ODR2;
     }
     _ctrlReg1 |= LPS_CTRL_REG1_PD;
     _writeByte(BASE_IMU_CTRL_REG1, _ctrlReg1);
@@ -45,11 +45,11 @@ float Barometer::readTemperatureF() { return readTemperatureC() * 1.8 + 32; }
 uint32_t Barometer::_readPressureRaw() {
     uint8_t data[3];
     _readBytes(0x80 | LPS_PRESS_OUT_XL, data, 3);
-    return (uint32_t)data[2] << 16 | (uint16_t)data[1] << 8 | data[0];
+    return static_cast<uint32_t>(data[2]) << 16 | static_cast<uint16_t>(data[1]) << 8 | data[0];
 }
 
 int16_t Barometer::_readTemperatureRaw() {
-    return ((int16_t)_readByte(LPS_TEMP_OUT_H) << 8)
+    return (static_cast<uint16_t>(_readByte(LPS_TEMP_OUT_H)) << 8)
            | _readByte(LPS_TEMP_OUT_L);
 }
 
