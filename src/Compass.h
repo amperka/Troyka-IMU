@@ -12,10 +12,10 @@ constexpr uint8_t LIS3MDL_CTRL_REG2_FS0 = 0x20;
 constexpr uint8_t LIS3MDL_CTRL_REG2_FS1 = 0x40;
 
 // Registers value bits
-constexpr uint8_t LIS3MDL_CTRL_REG3_MD0 = 0x00;
+constexpr uint8_t LIS3MDL_CTRL_REG3_MD0 = 0x01;
 constexpr uint8_t LIS3MDL_CTRL_REG3_MD1 = 0x02;
 
-// Constans: sensor sensitivity depending on selectable full scales
+// Sensor sensitivity depending on selectable full scales
 // Use the datasheet for details
 constexpr float SENS_4GAUSS = 6842;
 constexpr float SENS_8GAUSS = 3421;

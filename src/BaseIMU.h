@@ -34,11 +34,6 @@ protected:
     uint8_t _readByte(uint8_t regAddress);
     void _writeByte(uint8_t regAddress, uint8_t data);
     void _readBytes(uint8_t regAddress, uint8_t* data, uint8_t length);
-    uint8_t _ctrlReg1;
-    uint8_t _ctrlReg2;
-    uint8_t _ctrlReg3;
-    uint8_t _ctrlReg4;
-    uint8_t _ctrlReg5;
     TwoWire* _wire;
 
 private:

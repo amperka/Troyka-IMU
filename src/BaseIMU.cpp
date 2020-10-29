@@ -31,7 +31,6 @@ uint8_t BaseIMU::_readByte(uint8_t regAddress) {
     _wire->endTransmission();
     _wire->requestFrom(_slaveAddress, 1u);
     data = _wire->read();
-    _wire->endTransmission();
     return data;
 }
 
@@ -50,5 +49,4 @@ void BaseIMU::_readBytes(uint8_t regAddress, uint8_t* data, uint8_t length) {
     for (size_t i = 0; i < length; i++) {
         *data++ = _wire->read();
     }
-    _wire->endTransmission();
 }

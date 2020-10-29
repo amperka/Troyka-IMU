@@ -6,29 +6,33 @@ Compass::Compass(uint8_t slaveAddress)
 void Compass::begin(TwoWire& wire) {
     _wire = &wire;
     _wire->begin();
-    _writeByte(BASE_IMU_CTRL_REG3, _ctrlReg3);
-    setRange(CompassRange::RANGE_16GAUSS);
+    _scalingFactor = 1;
+    uint8_t data = 0;
+    data &= ~(LIS3MDL_CTRL_REG3_MD0 | LIS3MDL_CTRL_REG3_MD1);
+    _writeByte(BASE_IMU_CTRL_REG3, data);
+    setRange(CompassRange::RANGE_4GAUSS);
 }
 
 void Compass::setRange(CompassRange range) {
+    uint8_t data = _readByte(BASE_IMU_CTRL_REG2);
+    data &= ~(LIS3MDL_CTRL_REG2_FS0 | LIS3MDL_CTRL_REG2_FS1);
     switch (range) {
     case CompassRange::RANGE_4GAUSS: {
-        _ctrlReg2 = 0;
         _scalingFactor = SENS_4GAUSS;
         break;
     }
     case CompassRange::RANGE_8GAUSS: {
-        _ctrlReg2 = LIS3MDL_CTRL_REG2_FS0;
+        data |= LIS3MDL_CTRL_REG2_FS0;
         _scalingFactor = SENS_8GAUSS;
         break;
     }
     case CompassRange::RANGE_12GAUSS: {
-        _ctrlReg2 = LIS3MDL_CTRL_REG2_FS1;
+        data |= LIS3MDL_CTRL_REG2_FS1;
         _scalingFactor = SENS_12GAUSS;
         break;
     }
     case CompassRange::RANGE_16GAUSS: {
-        _ctrlReg2 = LIS3MDL_CTRL_REG2_FS0 | LIS3MDL_CTRL_REG2_FS1;
+        data |= LIS3MDL_CTRL_REG2_FS0 | LIS3MDL_CTRL_REG2_FS1;
         _scalingFactor = SENS_16GAUSS;
         break;
     }
@@ -36,16 +40,17 @@ void Compass::setRange(CompassRange range) {
         _scalingFactor = SENS_4GAUSS;
     } break;
     }
-    _writeByte(BASE_IMU_CTRL_REG2, _ctrlReg2);
+    _writeByte(BASE_IMU_CTRL_REG2, data);
 }
 
 void Compass::sleep(bool state) {
+    uint8_t data = _readByte(BASE_IMU_CTRL_REG3);
     if (state)
-        _ctrlReg3 |= LIS3MDL_CTRL_REG3_MD0 | LIS3MDL_CTRL_REG3_MD1;
+        data |= LIS3MDL_CTRL_REG3_MD0 | LIS3MDL_CTRL_REG3_MD1;
     else
-        _ctrlReg3 &= ~(LIS3MDL_CTRL_REG3_MD0 | LIS3MDL_CTRL_REG3_MD1);
+        data &= ~(LIS3MDL_CTRL_REG3_MD0 | LIS3MDL_CTRL_REG3_MD1);
 
-    _writeByte(BASE_IMU_CTRL_REG3, _ctrlReg3);
+    _writeByte(BASE_IMU_CTRL_REG3, data);
 }
 
 float Compass::readMagneticGaussX() { return readX() / _scalingFactor; }

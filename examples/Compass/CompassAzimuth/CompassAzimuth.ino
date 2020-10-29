@@ -4,8 +4,9 @@
 // Создаём объект для работы с магнитометром/компасом
 Compass compass;
 
-// Калибровочные значения, полученные в калибровочной матрице
-// из примера compassCalibration
+// Калибровочные данные для работы магнитометра в режиме компаса
+// Подробности читайте в документации про калиборку модуля
+// http://wiki.amperka.ru/articles:troyka-magnetometer-compass-calibrate 
 const float compassCalibrationBias[3] = { 567.893, -825.35, 1061.436 };
 
 const float compassCalibrationMatrix[3][3] = { { 1.909, 0.082, 0.004 },

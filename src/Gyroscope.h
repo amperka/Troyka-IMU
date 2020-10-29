@@ -17,7 +17,7 @@ constexpr uint8_t L3G4200D_CTRL_REG1_Y_EN = 0x02;
 constexpr uint8_t L3G4200D_CTRL_REG1_Z_EN = 0x04;
 constexpr uint8_t L3G4200D_CTRL_REG1_PD = 0x08;
 
-// Constans: sensor sensitivity depending on selectable full scales
+// Sensor sensitivity depending on selectable full scales
 // Use the datasheet for details
 constexpr float SENS_250DPS = 0.00875;
 constexpr float SENS_500DPS = 0.0175;

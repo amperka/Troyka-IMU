@@ -19,7 +19,7 @@ constexpr uint8_t LIS331DLH_CTRL_REG1_PM0 = 0x20;
 constexpr uint8_t LIS331DLH_CTRL_REG1_PM1 = 0x40;
 constexpr uint8_t LIS331DLH_CTRL_REG1_PM2 = 0x80;
 
-// Constans, Gravity of Earth
+// Gravity of Earth
 constexpr float GRAVITY_EARTH = 9.8;
 
 // Sensor sensitivity depending on selectable full scales

@@ -23,7 +23,7 @@ constexpr uint8_t LPS_TEMP_OUT_H = 0x2C;
 constexpr uint8_t LPS331_WHO_AM_I = 0xBB;
 constexpr uint8_t LPS25HB_WHO_AM_I = 0xBD;
 
-// Constans: conversion factors units of measurement
+// Conversion factors units of measurement
 constexpr float CELSIUS_TO_KELVIN = 273.15;
 constexpr float MILLIBARS_TO_PASCALS = 100;
 constexpr float MILLIBARS_TO_MILLIMETERSHG = 0.75;
@@ -39,7 +39,9 @@ public:
     float readTemperatureK();
     float readTemperatureF();
     float readAltitude();
-
+    // DEPRECATED fuctions
+    // Use readAccelerationGX instead
+    
 private:
     uint32_t _readPressureRaw();
     int16_t _readTemperatureRaw();
