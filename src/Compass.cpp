@@ -108,11 +108,9 @@ float Compass::readAzimut() {
     float mx = x, my = y, mz = z;
     _calibrate(mx, my, mz);
     float heading = atan2(mx, my);
-
-    if (heading < 0)
+    if (heading < 0) {
         heading += TWO_PI;
-    else if (heading > TWO_PI)
-        heading -= TWO_PI;
+    }
     float headingDegrees = heading * RAD_TO_DEG;
     return headingDegrees;
 }

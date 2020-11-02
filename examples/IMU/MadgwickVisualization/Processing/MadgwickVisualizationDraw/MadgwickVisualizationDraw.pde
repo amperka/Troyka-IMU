@@ -21,7 +21,7 @@ String [] massQ = new String [4];
 float[] ypr = new float[3];
 
 void setup()  {
-    // Size form 300x300
+    // Size form 400x400
     size(400, 400, P3D); 
     // Open serial port
     // Replace "COM7" with the COM port on which your arduino is connected
@@ -47,8 +47,8 @@ void draw()  {
     drawCylinder();
     // Draw Triangles
     drawTriangles();
-    // Draw Quards
-    drawQuards();
+    // Draw Quads
+    drawQuads();
     // End of object
     popMatrix();
     // Send character 's' to Arduino
@@ -150,7 +150,7 @@ void drawTriangles() {
     endShape();
 }
 
-void drawQuards() {
+void drawQuads() {
     beginShape(QUADS);
     vertex(-100, 2, 30); vertex(-100, -2, 30); vertex(  0, -2, -80); vertex(  0, 2, -80);
     vertex( 100, 2, 30); vertex( 100, -2, 30); vertex(  0, -2, -80); vertex(  0, 2, -80);

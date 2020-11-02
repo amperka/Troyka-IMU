@@ -10,17 +10,17 @@ Accelerometer accelerometer;
 // Создаём объект для работы с магнитометром/компасом
 Compass compass;
 
-// Переменные для данных с гироска, акселерометра и компаса
+// Переменные для данных с гироскопа, акселерометра и компаса
 float gx, gy, gz, ax, ay, az, mx, my, mz;
 
 // Переменные для хранения самолётных углов ориентации
 float yaw, pitch, roll;
 
 // Переменная для хранения частоты выборок фильтра
-float fps = 100;
+float sampleRate = 100;
 
 // Калибровочные данные для работы магнитометра в режиме компаса
-// Подробности читайте в документации про калиборку модуля
+// Подробности читайте в документации про калибровку модуля
 // http://wiki.amperka.ru/articles:troyka-magnetometer-compass-calibrate 
 const float compassCalibrationBias[3] = { 567.893, -825.35, 1061.436 };
 
@@ -59,7 +59,7 @@ void loop() {
     // Считываем данные с компаса в Гауссах
     compass.readCalibrateMagneticGaussXYZ(mx, my, mz);
     // Устанавливаем частоту фильтра
-    filter.setFrequency(fps);
+    filter.setFrequency(sampleRate);
     // Обновляем входные данные в фильтр
     filter.update(gx, gy, gz, ax, ay, az, mx, my, mz);
 
@@ -81,5 +81,5 @@ void loop() {
     // Вычисляем затраченное время на обработку данных
     unsigned long deltaMillis = millis() - startMillis;
     // Вычисляем частоту обработки фильтра
-    fps = 1000 / deltaMillis;
+    sampleRate = 1000 / deltaMillis;
 }

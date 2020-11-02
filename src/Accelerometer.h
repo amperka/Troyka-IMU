@@ -24,9 +24,9 @@ constexpr float GRAVITY_EARTH = 9.8;
 
 // Sensor sensitivity depending on selectable full scales
 // Use the datasheet for details
-constexpr float SENS_2G = 1;
-constexpr float SENS_4G = 2;
-constexpr float SENS_8G = 3.9;
+constexpr float SENS_2G = 1 * 4 / pow(2, 16);
+constexpr float SENS_4G = 2 * 4 / pow(2, 16);
+constexpr float SENS_8G = 3.9 * 4 / pow(2, 16);
 
 enum class AccelerometerRange { RANGE_2G = 1, RANGE_4G = 2, RANGE_8G = 3 };
 

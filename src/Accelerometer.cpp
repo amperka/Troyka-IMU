@@ -20,17 +20,17 @@ void Accelerometer::setRange(AccelerometerRange range) {
     data &= ~(LIS331DLH_CTRL_REG4_FS0 | LIS331DLH_CTRL_REG4_FS1);
     switch (range) {
     case AccelerometerRange::RANGE_2G: {
-        _scalingFactor = SENS_2G * 4 / pow(2, 16);
+        _scalingFactor = SENS_2G;
         break;
     }
     case AccelerometerRange::RANGE_4G: {
         data |= LIS331DLH_CTRL_REG4_FS0;
-        _scalingFactor = SENS_4G * 4 / pow(2, 16);
+        _scalingFactor = SENS_4G;
         break;
     }
     case AccelerometerRange::RANGE_8G: {
         data |= LIS331DLH_CTRL_REG4_FS0 | LIS331DLH_CTRL_REG4_FS1;
-        _scalingFactor = SENS_8G * 4 / pow(2, 16);
+        _scalingFactor = SENS_8G;
         break;
     }
     default: {

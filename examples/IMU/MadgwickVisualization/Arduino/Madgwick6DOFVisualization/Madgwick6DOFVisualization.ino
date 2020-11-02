@@ -8,14 +8,14 @@ Gyroscope gyroscope;
 // Создаём объект для работы с акселерометром
 Accelerometer accelerometer;
 
-// Переменные для данных с гироска и акселерометра и компаса
+// Переменные для данных с гироскопа и акселерометра и компаса
 float gx, gy, gz, ax, ay, az;
 
 // Переменные для хранения самолётных углов ориентации
 float yaw, pitch, roll;
 
 // Переменная для хранения частоты выборок фильтра
-float fps = 100;
+float sampleRate = 100;
 
 void setup() {
     // Открываем последовательный порт
@@ -38,7 +38,7 @@ void loop() {
     gyroscope.readRotationRadXYZ(gx, gy, gz);
 
     // Устанавливаем частоту фильтра
-    filter.setFrequency(fps);
+    filter.setFrequency(sampleRate);
     // Обновляем входные данные в фильтр
     filter.update(gx, gy, gz, ax, ay, az);
 
@@ -48,7 +48,7 @@ void loop() {
         if (val == 's') {
             float q0, q1, q2, q3;
             filter.readQuaternion(q0, q1, q2, q3);
-            // Выводим кватернионы в serial-порт
+            // Выводим кватернион в serial-порт
             Serial.print(q0);
             Serial.print(",");
             Serial.print(q1);
@@ -61,5 +61,5 @@ void loop() {
     // Вычисляем затраченное время на обработку данных
     unsigned long deltaMillis = millis() - startMillis;
     // Вычисляем частоту обработки фильтра
-    fps = 1000 / deltaMillis;
+    sampleRate = 1000 / deltaMillis;
 }
