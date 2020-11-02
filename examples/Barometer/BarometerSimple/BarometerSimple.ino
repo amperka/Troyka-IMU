@@ -5,7 +5,7 @@
 Barometer barometer;
 
 void setup() {
-    // Окрываем Serial-порт
+    // Открываем Serial-порт
     Serial.begin(9600);
     // Выводим сообщение о начале инициализации
     Serial.println("Barometer begin");

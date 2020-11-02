@@ -20,7 +20,7 @@ float yaw, pitch, roll;
 float sampleRate = 100;
 
 // Калибровочные данные для работы магнитометра в режиме компаса
-// Подробности читайте в документации про калиборку модуля
+// Подробности читайте в документации про калибровку модуля
 // http://wiki.amperka.ru/articles:troyka-magnetometer-compass-calibrate 
 const float compassCalibrationBias[3] = { 567.893, -825.35, 1061.436 };
 
