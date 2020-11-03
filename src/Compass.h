@@ -38,8 +38,8 @@ public:
     float readMagneticGaussX();
     float readMagneticGaussY();
     float readMagneticGaussZ();
-    void readCalibrateMagneticGaussXYZ(float& mx, float& my, float& mz);
     void readMagneticGaussXYZ(float& mx, float& my, float& mz);
+    void readCalibrateMagneticGaussXYZ(float& mx, float& my, float& mz);
     void setCalibrateMatrix(const float calibrationMatrix[3][3],
                             const float bias[3]);
     float readAzimut();

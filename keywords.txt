@@ -1,0 +1,100 @@
+#######################################
+# Syntax Coloring Map TroykaIMU
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+TroykaIMU	KEYWORD1
+Accelerometer	KEYWORD1
+AccelerometerRange	KEYWORD1
+Gyroscope	KEYWORD1
+GyroscopeRange	KEYWORD1
+Compass	KEYWORD1
+CompassRange	KEYWORD1
+Barometer	KEYWORD1
+Madgwick	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+sleep	KEYWORD2
+setRange	KEYWORD2
+readX	KEYWORD2
+readY	KEYWORD2
+readZ	KEYWORD2
+readXYZ	KEYWORD2
+readAccelerationGX	KEYWORD2
+readAccelerationGY	KEYWORD2
+readAccelerationGZ	KEYWORD2
+readAccelerationAX	KEYWORD2
+readAccelerationAY	KEYWORD2
+readAccelerationAZ	KEYWORD2
+readAccelerationGXYZ	KEYWORD2
+readAccelerationAXYZ	KEYWORD2
+readRotationDegX	KEYWORD2
+readRotationDegY	KEYWORD2
+readRotationDegZ	KEYWORD2
+readRotationRadX	KEYWORD2
+readRotationRadY	KEYWORD2
+readRotationRadZ	KEYWORD2
+readRotationDegXYZ	KEYWORD2
+readRotationRadXYZ	KEYWORD2
+readMagneticGaussX	KEYWORD2
+readMagneticGaussY	KEYWORD2
+readMagneticGaussZ	KEYWORD2
+readMagneticGaussXYZ	KEYWORD2
+readCalibrateMagneticGaussXYZ	KEYWORD2
+setCalibrateMatrix	KEYWORD2
+readAzimut	KEYWORD2
+readPressurePascals	KEYWORD2
+readPressureMillibars	KEYWORD2
+readPressureMillimetersHg	HgKEYWORD2
+readTemperatureC	KEYWORD2
+readTemperatureK	KEYWORD2
+readTemperatureF	KEYWORD2
+readAltitude	KEYWORD2
+setSettings	KEYWORD2
+setFrequency	KEYWORD2
+readQuaternion	KEYWORD2
+update	KEYWORD2
+reset	KEYWORD2
+getPitchRad	KEYWORD2
+getRollRad	KEYWORD2
+getYawRad	KEYWORD2
+getPitchDeg	KEYWORD2
+getRollDeg	KEYWORD2
+getYawDeg	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+LIS331DLH_SLAVE_ADDRESS	LITERAL1
+LIS331DLH_SLAVE_ADDRESS_ALT	LITERAL1
+GRAVITY_EARTH	LITERAL1
+RANGE_2G	LITERAL1
+RANGE_4G	LITERAL1
+RANGE_8G	LITERAL1
+
+L3G4200D_SLAVE_ADDRESS	LITERAL1
+L3G4200D_SLAVE_ADDRESS_ALT	LITERAL1
+RANGE_250DPS	LITERAL1
+RANGE_500DPS	LITERAL1
+RANGE_2000DPS	LITERAL1
+
+LIS3MDL_SLAVE_ADDRESS	LITERAL1
+LIS3MDL_SLAVE_ADDRESS_ALT	LITERAL1
+RANGE_4GAUSS	LITERAL1
+RANGE_8GAUSS	LITERAL1
+RANGE_12GAUSS	LITERAL1
+RANGE_4GAUSS	LITERAL1
+
+LPS_SLAVE_ADDRESS	LITERAL1
+LPS_SLAVE_ADDRESS_ALT	LITERAL1
+CELSIUS_TO_KELVIN	LITERAL1
+MILLIBARS_TO_PASCALS	LITERAL1
+MILLIBARS_TO_MILLIMETERSHG	LITERAL1

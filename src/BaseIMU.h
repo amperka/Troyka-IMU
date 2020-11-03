@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-// Registers addrress
+// Registers address
 constexpr uint8_t BASE_IMU_WHO_AM_I = 0x0F;
 constexpr uint8_t BASE_IMU_CTRL_REG1 = 0x20;
 constexpr uint8_t BASE_IMU_CTRL_REG2 = 0x21;
