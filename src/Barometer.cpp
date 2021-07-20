@@ -10,7 +10,7 @@ void Barometer::begin(TwoWire& wire) {
     _deviceID = readDeviceID();
     uint8_t data = 0;
     if (_deviceID == LPS331_WHO_AM_I) {
-        data |= LPS_CTRL_REG1_ODR0 | LPS_CTRL_REG1_ODR1 | LPS_CTRL_REG1_ODR2;
+        data |= LPS_CTRL_REG1_ODR1 | LPS_CTRL_REG1_ODR2;
     } else if (_deviceID == LPS25HB_WHO_AM_I) {
         data |= LPS_CTRL_REG1_ODR2;
     }
